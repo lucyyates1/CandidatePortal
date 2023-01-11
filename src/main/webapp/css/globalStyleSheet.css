@@ -1,0 +1,353 @@
+/* Global Style Sheet */
+
+* { /* This class affects every single element */
+    font-family: Noto Sans, Helvetica, sans-serif;
+    padding: 0;
+    margin: 0;
+}
+
+/* ------- CONTAINERS ------- */
+html {
+    height: 100%;
+}
+body { /* DO NOT CHANGE WITHOUT CAUTION (CHANGING CAN BREAK HEADER AND FOOTER) */
+       /* (CONSIDER CHANGING WRAPPER CLASS INSTEAD) */
+    min-height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between; /* MUST CHANGE EACH PAGE INDIVIDUALLY IF */
+                                    /* CENTERING OF EVERY ELEMENT ON SCREEN IS DESIRED */
+                                    /* See login.jsp or register.jsp */
+
+}
+div {
+
+}
+div.wrapper { /* EVERYTHING THAT ISN'T A HEADER OR A FOOTER MUST BE WRAPPED IN THIS CLASS */
+    padding: 2% 5% 5% 5%;
+    flex-grow: 1;
+}
+
+/* ------- NON-CONTAINER TAGS ------- */
+h1 {
+    font-size: clamp(1.5rem, 3vw, 3rem);
+    color: var(--navy);
+    padding-bottom: 3rem;
+}
+h2 {
+    font-size: clamp(1.5rem, 3vw, 3rem);
+    color: var(--navy);
+    padding-bottom: 2rem;
+    display: flex;
+    justify-content: center;
+}
+h3 {
+    font-size: clamp(1rem, 2vw, 2rem);
+    color: var(--navy);
+    padding-bottom: .5rem;
+}
+p {
+    color: black;
+    font-size: 1rem;
+}
+a {
+    border: none;
+    outline: none;
+}
+select {
+    color: grey;
+    font-size: 2rem;
+    padding: 0.5rem 0.5rem;
+}
+input[type="button"] {
+    font-weight: bold;
+    font-size: clamp(1rem, 1vw, 1.5rem);
+    color: black;
+    border: none;
+    outline: none;
+    border-radius: 4px;
+    background: var(--geek-purple);
+    cursor: pointer;
+    padding: .8rem 1.2rem;
+    margin: .5rem 0;        /* The first value denotes top and bottom; the second, left and right */
+}
+button {
+    font-weight: bold;
+    font-size: clamp(1rem, 1vw, 1.5rem);
+    color: white;
+    border: none;
+    outline: none;
+    border-radius: 4px;
+    background: var(--geek-purple);
+    cursor: pointer;
+    padding: .8rem 1.2rem;
+    margin: .5rem 0;        /* The first value denotes top and bottom; the second, left and right */
+}
+button:hover {
+    background: var(--geek-purple-light);
+}
+button:active {
+    background: var(--geek-purple-dark);
+}
+
+/* ------- TABLES ------- */
+.contentTableWrapper {     /* Makes table scrollable. *ALL TABLES MUST BE WRAPPED IN A DIV OF THIS CLASS FOR IT TO WORK PROPERLY */
+    display: inline-block;
+    border-radius: 5px;
+    overflow: auto;
+    max-height: 60vh;
+    min-height: 200px;
+    margin: 1rem 0;
+}
+.contentTable {
+
+}
+.displayTable {
+    white-space: pre-wrap;
+}
+table {
+    border-collapse: collapse;
+    border-radius: 0.3rem 0.3rem 0 0;
+    min-width: 50rem;
+}
+thead {     /* Makes table header stick to top when scrolling */
+    position: sticky;
+    top: 0;
+    background-color: var(--navy);
+    color: white;
+    cursor: pointer;
+    text-align: left;
+    font-weight: bold;
+    font-size: 1.2rem;
+}
+tbody {
+    font-size: 1rem;
+}
+th, td {
+    padding: 0.8rem 0.95rem;
+    text-align: left;
+}
+.displayTable td{
+    vertical-align: top;
+}
+.contentTable tbody tr:hover {        /* Highlights row that is currently being hovered over */
+    cursor: pointer;
+}
+.contentTable tbody tr:nth-child(even){     /* Alternating grey rows */
+    background: var(--grey);
+}
+.contentTable tbody tr:nth-child(odd){
+    background: var(--grey-lightest);
+}
+.th-sort-asc::after {
+    content: "\25b4";
+}
+.th-sort-desc::after {
+    content: "\25be";
+}
+.tr-sel {
+    box-shadow: inset 0px 0px 0px 3px var(--geek-purple);
+}
+
+/* ------- FORMS ------- */
+input[type="text"], input[type="password"] {
+    outline: none;
+    border: none;
+    background: none;
+    border-bottom: 2px solid black;
+    display: block;
+    margin: 20px 0;
+    color: black;
+    width: 25vw;
+    font-size: 1.3rem;
+}
+input[type="text"]::placeholder, input[type="password"]::placeholder {
+    color: darkgrey;
+}
+input[type="text"]:hover, input[type="password"]:hover {
+    border-bottom-color: darkgrey;
+}
+input[type="submit"] {
+    font-size: clamp(1rem, 1vw, 1.5rem);
+    border: none;
+    border-radius: 4px;
+    color: white;
+    background-color: var(--geek-blue-dark);
+    padding: 1%;
+    display: block;
+    cursor: pointer;
+    font-weight: bold;
+}
+input[type="submit"]:hover {
+    background-color: var(--geek-purple-light);
+}
+input[type="submit"]:active {
+    background-color: var(--geek-blue-dark);
+}
+input[type="button"] {
+    font-size: clamp(1rem, 1vw, 1.5rem);
+    border: none;
+    border-radius: 4px;
+    color: white;
+    background-color: var(--geek-purple);
+    display: block;
+    cursor: pointer;
+    font-weight: bold;
+}
+input[type="button"]:hover {
+    background-color: var(--geek-purple-light);
+}
+input[type="button"]:active {
+    background-color: var(--geek-purple-dark);
+}
+label {
+    padding: 7.5%;
+    color: var(--navy);
+}
+
+/* ------- TOOLTIPS ------- */
+.infolink:after {
+    content: '?';
+    display: inline-block;
+    font-family: sans-serif;
+    font-weight: bold;
+    text-align: center;
+    font-size: 0.8em;
+    line-height: 0.8em;
+    border-radius: 50%;
+    margin-left: 6px;
+    padding: 0.13em 0.2em 0.09em 0.2em;
+    color: dimgrey;
+    border: 2px solid;
+    text-decoration: none;
+}
+.tooltip{
+    position: absolute;
+    cursor: pointer;
+    padding: .5rem;
+}
+.tooltipText {
+    position: absolute;
+    top: -50%;
+    left: 400%;
+    font-size: .7rem;
+    width: 200px;
+    transform: translateX(-50%);
+    color: black;
+    padding: 10px 15px;
+    border: 2px solid;
+    border-radius: 5px;
+    visibility: hidden;
+    opacity: 0;
+    transition: opacity 0.5s ease;
+}
+.tooltip:hover .tooltipText{
+    visibility: visible;
+    opacity: 1;
+}
+
+/* ------- LOADING ANIMATION ------- */
+.loadingContainer {
+    top: 50%;
+    left: 50%;
+    position: fixed;
+    transform: translate(-50%,-50%);
+    z-index: 1;
+}
+.loadingAnimation {
+    border: 6px solid var(--grey-light);
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    border-top-color: var(--geek-purple);
+    border-left-color: var(--geek-purple);
+    animation: spin 1.5s infinite ease-in-out;
+}
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(720deg);
+    }
+}
+
+/* ------- COLLAPSIBLE CONTENT ------- */
+.collapsible {
+    background-color: var(--geek-purple-light);
+    color: white;
+    cursor: pointer;
+    padding: 18px;
+    margin: 0;
+    width: 100%;
+    border: none;
+    border-radius: 0;
+    text-align: left;
+    outline: none;
+    font-size: clamp(1rem, 1vw, 1.5rem);
+}
+.active, .collapsible:hover {
+    background-color: var(--geek-purple-dark);
+}
+.collapsible:after {
+    content: '\2B'; /* Unicode character for "plus" sign (+) */
+    font-size: clamp(1rem, 1vw, 1.5rem);
+    color: white;
+    float: right;
+    margin-left: 5px;
+}
+.active:after {
+    content: "\2D"; /* Unicode character for "minus" sign (-) */
+}
+.collapsibleContent {
+    padding: 0 18px;
+    background-color: var(--grey-light);
+    max-height: 0;
+    overflow: hidden;
+    border-radius: 0;
+    transition: max-height 0.2s ease-out;
+}
+
+/* ------- EXTRAS ------- */
+.error {
+    font-size: 1rem;
+    color: red;
+    font-style: italic;
+}
+.good {
+    color: green;
+}
+
+:root {
+    /* ------- Geek Marketing Colors ------- */
+
+    --geek-purple:          #9074FF;
+    --geek-purple-lighter:  #DCD4FF;
+    --geek-purple-light:    #B19DFF;
+    --geek-purple-dark:     #704DFF;
+    --geek-purple-darker:   #4B20FB;
+    --geek-blue:            #71A1FF;
+    --geek-blue-lighter:    #D3E2FF;
+    --geek-blue-light:      #9BBDFF;
+    --geek-blue-dark:       #4986FF;
+    --geek-blue-darker:     #1B66FB;
+    --geek-teal:            #61FFCF;
+    --geek-teal-lighter:    #CEFFF0;
+    --geek-teal-light:      #90FFDD;
+    --geek-teal-dark:       #35FFC2;
+    --geek-teal-darker:     #02FAAF;
+    --geek-yellow:          #FFE761;
+    --geek-yellow-lighter:  #FFF8CE;
+    --geek-yellow-light:    #FFEE90;
+    --geek-yellow-dark:     #FFE135;
+    --geek-yellow-darker:   #FFD902;
+
+    /* ------- Other Colors ------- */
+    --navy:                 #0B0F54;
+    --grey:                 #DDDDDD;
+    --grey-light:           #EEEEEE;
+    --grey-lightest:        #F5F5F5;
+    --white:                #FFFFFF;
+    --facebook-blue:        #4267B2;
+    --twitter-blue:         #1DA1F2;
+    --linkedin-blue:        #0077B5;
