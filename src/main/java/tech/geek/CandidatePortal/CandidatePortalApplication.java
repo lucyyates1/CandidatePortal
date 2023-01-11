@@ -13,8 +13,8 @@ import org.springframework.web.servlet.view.JstlView;
 
 @SpringBootApplication
 @ComponentScan(basePackages="tech.geek.CandidatePortal")
-//EntityScan(basePackages="tech.geek.CandidatePortal.entity")
-//@EnableJpaRepositories(basePackages="tech.geek.CandidatePortal.repo")
+@EntityScan(basePackages="tech.geek.CandidatePortal.entity")
+@EnableJpaRepositories(basePackages="tech.geek.CandidatePortal.repo")
 public class CandidatePortalApplication extends SpringBootServletInitializer {
 
 	public static void main(String[] args) {

@@ -62,4 +62,29 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .permitAll();
 
     }
+
+    @Bean
+    CorsConfigurationSource corsConfigurationSource()
+    {
+        CorsConfiguration configuration = new CorsConfiguration();
+        configuration.setAllowedOrigins(Arrays.asList("http://127.0.0.1:5000"));
+        configuration.setAllowedMethods(Arrays.asList("GET","POST"));
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**",configuration);
+        return source;
+    }
+
+    @Bean
+    public HttpFirewall configureFirewall()
+    {
+        StrictHttpFirewall strictHttpFirewall = new StrictHttpFirewall();
+        strictHttpFirewall.setAllowUrlEncodedDoubleSlash(true);
+        return strictHttpFirewall;
+    }
+
+    @Bean
+    public PasswordEncoder getPasswordEncoder()
+    {
+        return new BCryptPasswordEncoder();
+    }
 }
