@@ -5,10 +5,9 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import tech.groove.geeksi.entity.Candidate;
-import tech.groove.geeksi.entity.Position;
-import tech.groove.geeksi.repo.PositionRepo;
-import tech.groove.geeksi.repo.SkillRepo;
+
+import tech.geek.CandidatePortal.entity.Position;
+import tech.geek.CandidatePortal.repo.PositionRepo;
 
 @Service
 public class PositionService {
@@ -16,7 +15,6 @@ public class PositionService {
     private PositionRepo repository;
 
     @Autowired
-    private SkillRepo skillrepository;
 
     public Position savePosition(Position position){
         return repository.save(position);
