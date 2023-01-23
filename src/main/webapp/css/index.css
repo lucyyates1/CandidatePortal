@@ -1,0 +1,64 @@
+/* Home Page Stylesheet */
+
+p.metrics {
+    color: black;
+    font-size: 22px;
+    line-height: 10px;
+    margin: 20 40 24px;
+}
+a.geeksi {
+
+}
+/* ------- ORGANIZATIONAL ------- */
+.innerWrapper {
+    display: flex;
+    margin-bottom: 2rem;
+}
+.left {
+    flex-grow: 1;
+    flex-basis: 0;
+}
+.right {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    flex-basis: 0;
+}
+.rightTop {
+    display: flex;
+    align-items: center;
+}
+.rightBottom {
+    flex-grow: 1;
+    flex-basis: 0;
+}
+
+/* ------- OTHER ------- */
+.tagLine {
+    color: var(--geek-purple);
+    font-style: italic;
+}
+.about {
+    color: var(--geek-purple);
+    margin: 0;
+    padding: 0;
+}
+.aboutContent {
+    font-style: italic;
+}
+
+/* ------- TABLES ------- */
+table {
+    width: 90%;
+    min-width: 0;
+}
+thead {
+    position: static;
+}
+.contentTable tbody tr:hover {        /* Highlights row that is currently being hovered over */
+     cursor: auto;
+ }
+td.positionName:hover {
+    color: var(--geek-purple);
+    cursor: pointer;
+}
