@@ -14,8 +14,6 @@ public class PositionService {
     @Autowired
     private PositionRepo repository;
 
-    @Autowired
-
     public Position savePosition(Position position){
         return repository.save(position);
     }

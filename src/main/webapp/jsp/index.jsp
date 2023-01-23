@@ -18,7 +18,7 @@
                 <div class="left">
                     <h1 style="padding-bottom: 1rem;">Welcome Candidate!&trade; ${username}!</h1>
 
-                    <p class="tagLine">We'll dive deep into your haystack of candidates to find just the person you're looking for.</p>
+                    <p class="tagLine">Welcome to Needl! This page contains all active positions to apply for.\n Take a look around!</p>
 
 
                     <h3 style="margin-top: 2rem;">Current Positions:</h3>
@@ -27,9 +27,8 @@
                             <thead>
                                 <tr>
                                     <th>Position</th>
-                                    <th>Date Applied</th>
+                                    <th>Date Posted</th>
                                     <th>Company</th>
-                                    <th>Status</th>
                                 </tr>
                             </thead>
                             <tbody>
