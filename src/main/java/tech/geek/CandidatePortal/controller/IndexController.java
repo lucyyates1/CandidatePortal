@@ -31,7 +31,7 @@ public class IndexController {
         // Grabbing Position Dates & Filled Dates
         for (Position pos : listRecentPositions) {
             LocalDate tempFill = null;
-            for(PositionCandidate positionCandidate: pos.getPosition_candidates()) {
+            for(Position position: pos.getPosition_candidates()) {
                 if(positionCandidate.getFilled_date() != null)
                     tempFill = positionCandidate.getFilled_date();
             }
