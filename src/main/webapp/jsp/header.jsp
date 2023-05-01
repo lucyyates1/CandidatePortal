@@ -33,7 +33,7 @@
 <div class="header">
     <div>   <!-- necessary to wrap in a div to ensure proper formatting -->
         <a href="/">
-            <img class="header" src="../assets/Puzzle Desk v2.png"/>
+            <img class="header" src="../assets/Needl Logo.png"/>
         </a>
     </div>
     <div class="buttonsWrapper">

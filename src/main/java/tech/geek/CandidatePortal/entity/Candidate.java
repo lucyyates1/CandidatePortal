@@ -8,8 +8,8 @@ import java.time.LocalDate;
 import java.util.*;
 
 @Entity
-@Table(name="application")
-public class Application {
+@Table(name="Candidate")
+public class Candidate {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long application_id;
