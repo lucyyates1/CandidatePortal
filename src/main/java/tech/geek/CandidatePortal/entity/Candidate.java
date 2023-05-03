@@ -12,7 +12,7 @@ import java.util.*;
 public class Candidate {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long application_id;
+    private long candidate_id;
 
     @OneToMany(mappedBy = "candidate")
     @JsonIgnore
@@ -165,7 +165,7 @@ public class Candidate {
     @Override
     public String toString() {
         return "candidate{" +
-                "candidate_id=" + candidate_id +
+                " candidate_id=" + candidate_id +
                 ", first_name='" + first_name + '\'' +
                 ", last_name='" + last_name + '\'' +
                 ", education='" + education + '\'' +

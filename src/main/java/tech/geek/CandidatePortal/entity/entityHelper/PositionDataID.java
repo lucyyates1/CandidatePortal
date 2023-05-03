@@ -39,7 +39,7 @@ public class PositionDataID implements Serializable {
             return false;
         if (getClass() != obj.getClass())
             return false;
-        PositionCandidateID other = (PositionCandidateID) obj;
+        PositionDataID other = (PositionDataID) obj;
         if (candidateId == null) {
             if (other.candidateId != null)
                 return false;
