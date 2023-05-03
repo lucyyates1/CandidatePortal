@@ -18,6 +18,11 @@ public class Position {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long position_id;
 
+
+    @OneToMany(mappedBy = "position")
+    @JsonIgnore
+    private Set<PositionCandidate> position_candidates = new HashSet<>();
+
     @ManyToOne
     @JoinColumn(name = "user_group_id")
     @JsonIgnore
@@ -50,7 +55,6 @@ public class Position {
     private String place_of_performance;
 
     private boolean template;
-
 
     public Position() {}
 
@@ -138,7 +142,13 @@ public class Position {
         this.template = template;
     }
 
+    public Set<PositionCandidate> getPosition_candidates() {
+        return position_candidates;
+    }
 
+    public void setPosition_candidates(Set<PositionCandidate> position_candidates) {
+        this.position_candidates = position_candidates;
+    }
 
     @Override
     public String toString() {

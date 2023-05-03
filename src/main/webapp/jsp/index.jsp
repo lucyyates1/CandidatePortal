@@ -16,9 +16,9 @@
         <div class="wrapper">
             <div class="innerWrapper">
                 <div class="left">
-                    <h1 style="padding-bottom: 1rem;">Welcome Candidate!&trade; ${username}!</h1>
+                    <h1 style="padding-bottom: 1rem;">Welcome Candidate ${username}!</h1>
 
-                    <p class="tagLine">Welcome to Needl! This page contains all active positions to apply for.\n Take a look around!</p>
+                    <p class="tagLine">Welcome to Needl! This page contains all active positions to apply for.<br>Take a look around!</p>
 
 
                     <h3 style="margin-top: 2rem;">Current Positions:</h3>
@@ -42,12 +42,7 @@
                                     <c:if test="${listPositions.get(position).date == null}">
                                         <td></td>
                                     </c:if>
-                                    <c:if test="${listFilDates.get(position) != null}">
-                                        <td>${listFilDates.get(position).format(formatter)}</td>
-                                    </c:if>
-                                    <c:if test="${listFilDates.get(position) == null}">
-                                        <td></td>
-                                    </c:if>
+                                    <td>${listPositions.get(position).getClient().getName()}</td>
                                     </tr>
                                 </c:forEach>
                             </tbody>

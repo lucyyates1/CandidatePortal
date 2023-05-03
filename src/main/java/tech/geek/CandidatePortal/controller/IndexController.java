@@ -6,6 +6,10 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import tech.geek.CandidatePortal.entity.Candidate;
+import tech.geek.CandidatePortal.entity.PositionCandidate;
+import tech.geek.CandidatePortal.services.CandidateService;
+import tech.geek.CandidatePortal.services.PositionCandidateService;
 import tech.geek.CandidatePortal.services.PositionService;
 import tech.geek.CandidatePortal.entity.Position;
 import java.time.LocalDate;
@@ -17,6 +21,12 @@ import java.util.List;
 public class IndexController {
     @Autowired
     PositionService positionService;
+
+    @Autowired
+    CandidateService candidateService;
+
+    @Autowired
+    PositionCandidateService positionCandidateService;
 
     @GetMapping("/")
     public String home(Model model) {
@@ -31,7 +41,7 @@ public class IndexController {
         // Grabbing Position Dates & Filled Dates
         for (Position pos : listRecentPositions) {
             LocalDate tempFill = null;
-            for(Position position: pos.getPosition_candidates()) {
+            for(PositionCandidate positionCandidate: pos.getPosition_candidates()) {
                 if(positionCandidate.getFilled_date() != null)
                     tempFill = positionCandidate.getFilled_date();
             }

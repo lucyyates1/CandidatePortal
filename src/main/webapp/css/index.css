@@ -37,6 +37,7 @@ a.geeksi {
 .tagLine {
     color: var(--geek-purple);
     font-style: italic;
+    line-height: 200%;
 }
 .about {
     color: var(--geek-purple);
