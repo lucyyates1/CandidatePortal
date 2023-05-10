@@ -23,6 +23,14 @@ public class Position {
     @JsonIgnore
     private Set<PositionCandidate> position_candidates = new HashSet<>();
 
+    @OneToMany(mappedBy = "position")
+    @JsonIgnore
+    private Set<PositionSkill> position_skill = new HashSet<>();
+
+    @OneToMany(mappedBy = "certification")
+    @JsonIgnore
+    private Set<PositionCertification> position_certification = new HashSet<>();
+
     @ManyToOne
     @JoinColumn(name = "user_group_id")
     @JsonIgnore
@@ -58,8 +66,11 @@ public class Position {
 
     public Position() {}
 
-    public Position(int position_id, UserGroup userGroup, Client client, String name, LocalDate date, String description, String education, boolean education_required, int experience_required, String place_of_performance, boolean template) {
+    public Position(long position_id, Set<PositionCandidate> position_candidates, Set<PositionSkill> position_skill, Set<PositionCertification> position_certification, UserGroup userGroup, Client client, String name, LocalDate date, String description, String education, boolean education_required, int experience_required, String place_of_performance, boolean template) {
         this.position_id = position_id;
+        this.position_candidates = position_candidates;
+        this.position_skill = position_skill;
+        this.position_certification = position_certification;
         this.userGroup = userGroup;
         this.client = client;
         this.name = name;
@@ -150,21 +161,39 @@ public class Position {
         this.position_candidates = position_candidates;
     }
 
+    public Set<PositionSkill> getPosition_skill() {
+        return position_skill;
+    }
+
+    public void setPosition_skill(Set<PositionSkill> position_skill) {
+        this.position_skill = position_skill;
+    }
+
+    public Set<PositionCertification> getPosition_certification() {
+        return position_certification;
+    }
+
+    public void setPosition_certification(Set<PositionCertification> position_certification) {
+        this.position_certification = position_certification;
+    }
+
     @Override
     public String toString() {
-        return "position{" +
+        return "Position{" +
                 "position_id=" + position_id +
-                ", userGroup=" + userGroup.getName() +
-                ", Client=" + client.getName() +
+                ", position_candidates=" + position_candidates +
+                ", position_skill=" + position_skill +
+                ", position_certification=" + position_certification +
+                ", userGroup=" + userGroup +
+                ", client=" + client +
                 ", name='" + name + '\'' +
                 ", date=" + date +
                 ", description='" + description + '\'' +
                 ", education='" + education + '\'' +
-                ", education_required='" + education_required + '\'' +
-                ", experience_required='" + experience_required + '\'' +
-                ", place_of_performance='" + place_of_performance + '\''+
+                ", education_required=" + education_required +
+                ", experience_required=" + experience_required +
+                ", place_of_performance='" + place_of_performance + '\'' +
                 ", template=" + template +
                 '}';
-
     }
 }

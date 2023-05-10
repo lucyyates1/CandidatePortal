@@ -42,7 +42,7 @@
                                     <c:if test="${listPositions.get(position).date == null}">
                                         <td></td>
                                     </c:if>
-                                    <td>${listPositions.get(position).getClient().getName()}</td>
+                                    <td>${listPositions.get(position).getUserGroup().getName()}</td>
                                     </tr>
                                 </c:forEach>
                             </tbody>

@@ -56,8 +56,11 @@ a {
 }
 select {
     color: grey;
-    font-size: 2rem;
+    font-size: 1rem;
     padding: 0.5rem 0.5rem;
+    height: 40px;
+    margin: 15px 0px;
+    color: black;
 }
 input[type="button"] {
     font-weight: bold;

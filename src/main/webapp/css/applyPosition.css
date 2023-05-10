@@ -1,0 +1,85 @@
+/* Add New Candidate Page Style Sheet */
+
+select {
+    border-radius: 5px;
+    border: 2px solid var(--geek-purple-dark);
+    background: white;
+    width: 42%;
+}
+textArea {
+    border-radius: 5px;
+    border: 2px solid var(--geek-purple-dark);
+    color: black;
+    margin: 0;
+    padding: 1%;
+}
+textArea:hover {
+    background: var(--geek-purple-lighter);
+}
+.form-wrapper {
+    width: 80%;
+    margin: auto;
+}
+.generic_section {
+    display: grid;
+    grid-template-columns: 35% 60%;
+}
+.generic_section label {
+    text-align: right;
+}
+.spanWrapper {
+    display: grid;
+    grid-template-columns: 35% 60%;
+    align-items: center;
+}
+.skill_table {
+    background-color: var(--geek-blue-lighter);
+    border-radius: 5px;
+    min-height: 2rem;
+    width: 100%;
+}
+.keywordRow {
+    display: grid;
+    grid-template-columns: 60% 5% 5% 5% 10%;
+    grid-gap: 1em;
+    padding: 1em;
+    align-items: start;
+    vertical-align: text-top;
+ }
+ .keywordRow label {
+    text-align: left;
+    padding: 0; /* this should be in global css for all labels man ...*/
+ }
+ .addKeywordWrapper {
+    display: flex;
+    justify-content: right;
+    width: 95%;
+ }
+ .submit_section {
+    display: flex;
+    padding: 1rem 0;
+    justify-content: center;
+ }
+input[type="date"] {
+    border-radius: 5px;
+    border: 2px solid var(--geek-purple-dark);
+    width: 25%;
+    height: 50%;
+    text-align: center;
+    align-self: center;
+    font-size: 1.1em;
+}
+input[type="date"]:hover {
+    background: var(--geek-purple-lighter);
+}
+input[type="text"] {
+    border-radius: 5px;
+    border: 2px solid var(--geek-purple-dark);
+    color: black;
+    width: 70%;
+    font-size: 1.1em;
+    padding: 1%;
+}
+input[type="text"]:hover {
+    background: var(--geek-purple-lighter);
+}
