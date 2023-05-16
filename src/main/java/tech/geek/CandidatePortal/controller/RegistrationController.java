@@ -46,6 +46,8 @@ public class RegistrationController {
     @PostMapping("/register")
     public String register_confirm(@ModelAttribute User user, @RequestParam String passwordConfirm, RedirectAttributes attributes) {
         // flags for whether something was even entered
+        boolean firstnameEntered = (user.getFirst_name() != "");
+        boolean lastnameEntered = (user.getLast_name() != "");
         boolean usernameEntered = (user.getUsername() != "");
         boolean emailEntered = (user.getEmail() != "");
         boolean passwordEntered = (user.getPassword() != "");
@@ -57,11 +59,17 @@ public class RegistrationController {
         boolean passwordCriteriaFlag = false;
         boolean passwordMatchFlag = false;
         // strings to store errors
+        String firstnameError = "";
+        String lastnameError = "";
         String usernameError = "";
         String passwordError = "";
         String emailError = "";
         String passwordConfirmError = "";
 
+        if (!firstnameEntered)
+            firstnameError += "First Name required. ";
+        if (!firstnameEntered)
+            lastnameError += "Last Name required. ";
         if (!usernameEntered)
             usernameError += "Username required. ";
         if (!emailEntered)
@@ -94,8 +102,10 @@ public class RegistrationController {
         }
 
 
-        if (!usernameEntered || !emailEntered || !passwordEntered || !passwordConfirmEntered
+        if (!firstnameEntered || !lastnameEntered || !usernameEntered || !emailEntered || !passwordEntered || !passwordConfirmEntered
                 || usernameAlreadyExistsFlag || emailAlreadyExistsFlag || passwordCriteriaFlag || passwordMatchFlag || emailCriteriaFlag) {
+            attributes.addFlashAttribute("firstnameError", firstnameError);
+            attributes.addFlashAttribute("lastnameError", lastnameError);
             attributes.addFlashAttribute("usernameError", usernameError);
             attributes.addFlashAttribute("emailError", emailError);
             attributes.addFlashAttribute("passwordError", passwordError);

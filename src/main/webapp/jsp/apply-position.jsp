@@ -20,37 +20,34 @@
     </head>
     <body>
     <div class="wrapper">
-        <h1 class="apply-header">Application Page</h1>
+        <h2 class="apply-header">Application Page</h2>
         <div class="form-wrapper">
-            <form:form modelAttribute="positionCandidate" method="POST" action="applyposition" >
-                <div class="generic_section" id="position-list">
-                    <label for="position-id" class="input_label">Position Applying for:</label>
-                    <form:select path="id.positionId" id="position-id">
-                        <c:forEach var="position" items="${positions}">
-                            <c:if test="${position.getPosition_id() == selectedPositionID}">
-                                <form:option selected="true" value="${position.getPosition_id()}" label="${position.getName()}"/>
+            <form:form method="POST" action="/applyposition" id="candidate-form"  enctype="multipart/form-data">
+                <div class="generic_section" id="candidate-form">
+                    <label for="position" class="input_label">Position Applying for:</label>
+                    <select name="position-id" id="position">
+                        <c:forEach var="pos" items="${positions}">
+                            <c:if test="${pos.getPosition_id() == selectedPositionID}">
+                                <option selected="true" value="${pos.position_id}" >${pos.name}</option>
                             </c:if>
-                            <c:if test="${position.getPosition_id() != selectedPositionID}">
-                                <form:option value="${position.getPosition_id()}" label="${position.getName()}"/>
+                            <c:if test="${pos.getPosition_id() != selectedPositionID}">
+                                <option value="${pos.position_id}">${pos.name}</option>
                             </c:if>
                         </c:forEach>
-                    </form:select>
-                </div>
-            </form:form>
-            <form:form modelAttribute="newCandidate" method="POST" action="applyposition" >
-                <div class="generic_section" id="candidate-form">
-                    <label for="candidate-first-name" class="input_label">First Name:</label>
-                    <input path="first_name" type="text" name="name" id="candidate-first-name">
-                    <label for="candidate-last-name" class="input_label">Last Name:</label>
-                    <input path="last_name" type="text" name="name" id="candidate-last-name">
-                    <!-- NEED TO CHANGE THIS TO UPLOAD RATHER THAN A TEXT ENTRY -->
-                    <label for="candidate-resume" class="input_label">Resume:</label>
-                    <input path="resume_path" type="text" name="name" id="candidate-resume" placeholder="Upload Document ->">
+                    </select>
+                    <label for="candidate-first-name" class="input_label">First Name (*):</label>
+                    <input name="first-name" type="text" id="candidate-first-name" required="required" />
+                    <label for="candidate-last-name" class="input_label">Last Name (*):</label>
+                    <input name="last-name" type="text" id="candidate-last-name" required="required" />
+                    <!-- FILE UPLOADS FOR RESUME -->
+                    <label for="resume-upload" class="input_label">Resume (*):</label>
+                    <input id="resume-upload" type="file" name="resume" required="required"/>
+                    <!-- FILE UPLOADS FOR COVER LETTER -->
                     <!-- Need to Add a Cover Letter Path to the candidate table -->
-                    <label for="candidate-cover-letter" class="input_label">Cover Letter:</label>
-                    <input type="text" name="name" id="candidate-cover-letter" placeholder="Upload Document ->">
+                    <label for="cover-letter-upload" class="input_label">Cover Letter:</label>
+                    <input id="cover-letter-upload" type="file" name="cover-letter" />
                     <label for="candidate-notes" class="input_label">Comments:</label>
-                    <textarea path="notes" type="text" name="name" id="candidate-notes" style="height: 200px; width: 70%;"></textarea>
+                    <textarea name="text" type="text" id="candidate-notes" style="height: 200px; width: 70%;"></textarea>
                     <p></p>
                     <button style="margin: 50px; width: 40%" type="submit" id="button_apply">Submit</button>
                 </div>
@@ -62,8 +59,41 @@
         <jsp:include page="footer.jsp"/>
     </footer>
     <script>
-        submitForms = function(){
-            document.getElementById(""
-        }
+        $(document).ready(function(){
+            var token = $("meta[name='_csrf']").attr("content");
+            var header = $("meta[name='_csrf_header']").attr("content");
+
+            const queryString = window.location.search
+            const urlParams = new URLSearchParams(queryString)
+
+            /*
+            * Adding CSRF token to AJAX header
+            */
+            $(function () {
+                var token = $("input[name='_csrf']").val();
+                var header = "X-CSRF-TOKEN";
+                $(document).ajaxSend(function(e, xhr, options) {
+                    xhr.setRequestHeader(header, token);
+                });
+            });
+
+            $(".loadingContainer").hide();
+            // Disabling the page while an AJAX request is made
+            $(document).ajaxStart(function () {
+                $("*").css('pointer-events','none');
+                $("*").css('overflow','hidden');
+                $("body").css('background-color','var(--grey-light)');
+                $("body").css('opacity','0.5');
+                $(".loadingContainer").show();
+            });
+            // Enabling the page once the AJAX request returns
+            $(document).ajaxStop(function () {
+                $("*").css('pointer-events','');
+                $("*").css('overflow','');
+                $("body").css('background-color','');
+                $("body").css('opacity','');
+                $(".loadingContainer").hide();
+            });
+         });
     </script>
 </html>

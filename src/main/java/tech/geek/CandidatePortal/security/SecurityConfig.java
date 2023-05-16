@@ -61,6 +61,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .logout()
                 .permitAll();
+        //Need this for the form request on the Apply Page to work
+        http.csrf().disable();
 
     }
 

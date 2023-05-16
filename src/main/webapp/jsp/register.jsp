@@ -56,7 +56,9 @@
             <h2>Register</h2>
             <span class="good">${registrationSuccess}</span>
             <form:form name="RegForm" onsubmit="return validate()" action="${pageContext.request.contextPath}/register" method="POST">
+                <span class="error">${firstnameError}</span>
                 <input class="formInput" type="text" name="first_name" placeholder="First name"/>
+                <span class="error">${lastnameError}</span>
                 <input class="formInput" type="text" name="last_name" placeholder="Last name"/>
                 <span class="error">${usernameError}</span>
                 <input class="formInput" type="text" name="username" placeholder="Username" spellcheck="false"/>

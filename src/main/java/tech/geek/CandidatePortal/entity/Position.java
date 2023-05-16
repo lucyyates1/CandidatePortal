@@ -25,7 +25,7 @@ public class Position {
 
     @OneToMany(mappedBy = "position")
     @JsonIgnore
-    private Set<PositionSkill> position_skill = new HashSet<>();
+    private Set<PositionSkill> position_skills = new HashSet<>();
 
     @OneToMany(mappedBy = "certification")
     @JsonIgnore
@@ -69,7 +69,7 @@ public class Position {
     public Position(long position_id, Set<PositionCandidate> position_candidates, Set<PositionSkill> position_skill, Set<PositionCertification> position_certification, UserGroup userGroup, Client client, String name, LocalDate date, String description, String education, boolean education_required, int experience_required, String place_of_performance, boolean template) {
         this.position_id = position_id;
         this.position_candidates = position_candidates;
-        this.position_skill = position_skill;
+        this.position_skills = position_skill;
         this.position_certification = position_certification;
         this.userGroup = userGroup;
         this.client = client;
@@ -161,12 +161,12 @@ public class Position {
         this.position_candidates = position_candidates;
     }
 
-    public Set<PositionSkill> getPosition_skill() {
-        return position_skill;
+    public Set<PositionSkill> getPosition_skills() {
+        return position_skills;
     }
 
     public void setPosition_skill(Set<PositionSkill> position_skill) {
-        this.position_skill = position_skill;
+        this.position_skills = position_skill;
     }
 
     public Set<PositionCertification> getPosition_certification() {
@@ -182,7 +182,7 @@ public class Position {
         return "Position{" +
                 "position_id=" + position_id +
                 ", position_candidates=" + position_candidates +
-                ", position_skill=" + position_skill +
+                ", position_skill=" + position_skills +
                 ", position_certification=" + position_certification +
                 ", userGroup=" + userGroup +
                 ", client=" + client +
