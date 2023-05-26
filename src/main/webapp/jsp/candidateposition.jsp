@@ -50,10 +50,10 @@
                         <td style="width: 14%">Qualifications: </td>
                         <td>
                             <c:forEach var="skill" items="${position.getPosition_skills()}">
-                                <p>${skill.getSkill().getName()} (Skill)</p>
+                                <p>${skill.getSkill().getName()}</p>
                             </c:forEach>
                             <c:forEach var="certification" items="${position.getPosition_certification()}">
-                                <p>${certification.getPosition().getName()} (Certification)</p>
+                                <p>Certification in ${certification.getPosition().getName()}</p>
                             </c:forEach>
                         </td>
                     </tr>

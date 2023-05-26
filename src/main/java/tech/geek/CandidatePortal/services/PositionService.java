@@ -1,6 +1,9 @@
 package tech.geek.CandidatePortal.services;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.PriorityQueue;
+import java.util.Queue;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,6 +16,8 @@ import tech.geek.CandidatePortal.repo.PositionRepo;
 public class PositionService {
     @Autowired
     private PositionRepo repository;
+
+    public static List<Long> prevViewed = new ArrayList<>(3);
 
     public Position savePosition(Position position){
         return repository.save(position);

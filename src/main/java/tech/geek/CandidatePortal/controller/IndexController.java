@@ -31,9 +31,14 @@ public class IndexController {
     @GetMapping("/")
     public String home(Model model) {
 
+        //Fills the array with the recently viewed positions
         List<Position> listPositions = positionService.getAllPositions();
         listPositions.removeIf(Position::isTemplate);
-        List<Position> listRecentPositions = positionService.getRecentPositions();
+        List<Position> listRecentPositions = new ArrayList<>();
+        System.out.println(PositionService.prevViewed);
+        for(long id: PositionService.prevViewed){
+            listRecentPositions.add(positionService.getPositionById(id));
+        }
         // Creating a list of dates to send to front end
         //  - Necessary because we need to format the dates
         List<LocalDate> listFilDates = new ArrayList<>();

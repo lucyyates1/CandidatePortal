@@ -64,9 +64,11 @@ public class Position {
 
     private boolean template;
 
+    private boolean archived;
+
     public Position() {}
 
-    public Position(long position_id, Set<PositionCandidate> position_candidates, Set<PositionSkill> position_skill, Set<PositionCertification> position_certification, UserGroup userGroup, Client client, String name, LocalDate date, String description, String education, boolean education_required, int experience_required, String place_of_performance, boolean template) {
+    public Position(long position_id, Set<PositionCandidate> position_candidates, Set<PositionSkill> position_skill, Set<PositionCertification> position_certification, UserGroup userGroup, Client client, String name, LocalDate date, String description, String education, boolean education_required, int experience_required, String place_of_performance, boolean template, boolean archived) {
         this.position_id = position_id;
         this.position_candidates = position_candidates;
         this.position_skills = position_skill;
@@ -81,6 +83,7 @@ public class Position {
         this.experience_required = experience_required;
         this.place_of_performance = place_of_performance;
         this.template = template;
+        this.archived = archived;
     }
 
     public long getPosition_id() { return position_id; }
@@ -177,12 +180,24 @@ public class Position {
         this.position_certification = position_certification;
     }
 
+    public void setPosition_skills(Set<PositionSkill> position_skills) {
+        this.position_skills = position_skills;
+    }
+
+    public boolean isArchived() {
+        return archived;
+    }
+
+    public void setArchived(boolean archived) {
+        this.archived = archived;
+    }
+
     @Override
     public String toString() {
         return "Position{" +
                 "position_id=" + position_id +
                 ", position_candidates=" + position_candidates +
-                ", position_skill=" + position_skills +
+                ", position_skills=" + position_skills +
                 ", position_certification=" + position_certification +
                 ", userGroup=" + userGroup +
                 ", client=" + client +
@@ -194,6 +209,7 @@ public class Position {
                 ", experience_required=" + experience_required +
                 ", place_of_performance='" + place_of_performance + '\'' +
                 ", template=" + template +
+                ", archived=" + archived +
                 '}';
     }
 }

@@ -18,10 +18,10 @@
                 <div class="left">
                     <h1 style="padding-bottom: 1rem;">Welcome Candidate ${username}!</h1>
 
-                    <p class="tagLine">Welcome to Needl! This page contains all active positions to apply for.<br>Take a look around!</p>
+                    <p class="tagLine">Welcome to Needl! This page contains all recently viewed positions.<br>Take a look around!</p>
 
 
-                    <h3 style="margin-top: 2rem;">Current Positions:</h3>
+                    <h3 style="margin-top: 2rem;">Recently Viewed Positions:</h3>
                     <c:if test="${listPositions.size() > 0}">
                         <table id="latest_positions" class="contentTable">
                             <thead>
@@ -49,7 +49,8 @@
                         </table>
                     </c:if>
                     <c:if test="${listPositions.size() < 1}">
-                        <h3>There are currently no active positions</h3>
+                        <p style="font-weight: bold; text-decoration: underline;">You Haven't Viewed Any Positions Yet</p>
+                        <button class="positions">Get Started Here</button>
                     </c:if>
                 </div>
                 <div class="right">

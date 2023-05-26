@@ -13,7 +13,7 @@ public interface PositionRepo extends JpaRepository<Position, Long> {
 
     List<Position> findByTemplate(Boolean template);
 
-    @Query(value = "SELECT * FROM position WHERE template IS false ORDER BY date DESC LIMIT 3", nativeQuery = true)
+    @Query(value = "SELECT * FROM position WHERE template IS false AND archived IS false ORDER BY date DESC LIMIT 3", nativeQuery = true)
     List<Position> getRecentPositions();
 
 }

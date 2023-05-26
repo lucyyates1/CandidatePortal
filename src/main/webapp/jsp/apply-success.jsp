@@ -5,7 +5,7 @@
     <head>
         <meta name="_csrf" content="${_csrf.token}"/>
         <meta name="_csrf_header" content="${_csrf.headerName}"/>
-        <title>Needl</title>
+        <title>Applied</title>
         <jsp:include page="header.jsp"/>
         <link rel="stylesheet" href="../css/globalStyleSheet.css">
         <link rel="stylesheet" href="../css/index.css">

@@ -56,4 +56,21 @@ $(document).ready(function(){
             }
         });
     })
+    /*
+     * Selecting Search Positions
+     * -sends you to the Postions Page
+     */
+    $('.positions').on('click', function(){
+        $.ajax({
+            type: "GET",
+            url: '/positions',
+            success: function (position) {
+                window.location = "/positions"
+            },
+
+            failure: function (errMsg) {
+                console.log(errMsg.toString())
+            }
+        });
+    })
 });

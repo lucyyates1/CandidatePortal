@@ -30,6 +30,7 @@ public class CandidatePortalApplication extends SpringBootServletInitializer {
 		return bean;
 	}
 
+	//For Multipart Files (Resumes and Cover Letter File Uploads)
 	@Bean(name = "multipartResolver")
 	public CommonsMultipartResolver multipartResolver() {
 		CommonsMultipartResolver multipartResolver = new CommonsMultipartResolver();

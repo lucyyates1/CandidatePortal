@@ -40,6 +40,13 @@
 			<version>1.4</version>
 		</dependency>
 
+		<!-- Dependencies for Mailing -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-mail</artifactId>
+		</dependency>
+
+
         <dependency>
             <groupId>org.json</groupId>
             <artifactId>json</artifactId>
