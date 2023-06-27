@@ -1,0 +1,15 @@
+div.tableAdjacentGraphic {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: flex-start;            /* This allows the table to not determine it's height based on the div height */
+}
+img.puzzleDesk {
+    padding: 0 1rem 0 1rem;
+    object-fit: contain;
+    max-width: 20rem;
+    min-width: 10rem;
+}
+td.positionName:hover {
+    color: var(--geek-purple);
+}

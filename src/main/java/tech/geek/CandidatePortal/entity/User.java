@@ -1,13 +1,10 @@
 package tech.geek.CandidatePortal.entity;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name="user")
@@ -16,6 +13,10 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int user_id;
+
+    @OneToMany(mappedBy = "user")
+    @JsonIgnore
+    private Set<Application> applications = new HashSet<>();
 
     @ManyToOne
     @JoinColumn(name = "user_group_id")
@@ -44,23 +45,16 @@ public class User {
 
     public User() {}
 
-    public User(int user_id, UserGroup userGroup, Role role, String firstName, String lastName, String username, String password, String email) {
+    public User(int user_id, UserGroup userGroup, Set<Application> applications, Role role, String first_name, String last_name, String username, String password, String email) {
         this.user_id = user_id;
         this.userGroup = userGroup;
+        this.applications = applications;
         this.role = role;
-        this.first_name = firstName;
-        this.last_name = lastName;
+        this.first_name = first_name;
+        this.last_name = last_name;
         this.username = username;
         this.password = password;
         this.email = email;
-    }
-
-    public long getId() {
-        return user_id;
-    }
-
-    public void setId(int userId) {
-        this.user_id = userId;
     }
 
     public int getUser_id() {
@@ -79,11 +73,19 @@ public class User {
         this.userGroup = userGroup;
     }
 
+    public Set<Application> getApplications() {
+        return applications;
+    }
+
+    public void setApplications(Set<Application> applications) {
+        this.applications = applications;
+    }
+
     public Role getRole() {
         return role;
-    }       // Consider changing to set by String instead of Role Object
+    }
 
-    public void setRole(Role role) {            // Consider changing to set by String instead of Role Object
+    public void setRole(Role role) {
         this.role = role;
     }
 
@@ -119,21 +121,11 @@ public class User {
         this.password = password;
     }
 
-    public String getEmail() { return email; }
+    public String getEmail() {
+        return email;
+    }
 
-    public void setEmail(String email) { this.email = email; }
-
-    @Override
-    public String toString() {
-        return "user{" +
-                "user_id=" + user_id +
-                ", userGroup=" + userGroup +
-                ", Role=" + role +
-                ", first_name='" + first_name + '\'' +
-                ", last_name='" + last_name + '\'' +
-                ", username='" + username + '\'' +
-                ", password='" + password + '\'' +
-                ", email='" + email + '\'' +
-                '}';
+    public void setEmail(String email) {
+        this.email = email;
     }
 }

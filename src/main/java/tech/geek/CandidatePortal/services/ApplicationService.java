@@ -7,11 +7,10 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
-import tech.geek.CandidatePortal.entity.Candidate;
+import tech.geek.CandidatePortal.entity.Application;
 import tech.geek.CandidatePortal.entity.Position;
-import tech.geek.CandidatePortal.entity.PositionCertification;
 import tech.geek.CandidatePortal.entity.PositionSkill;
-import tech.geek.CandidatePortal.repo.CandidateRepo;
+import tech.geek.CandidatePortal.repo.ApplicationRepo;
 
 import java.util.Dictionary;
 import java.util.Hashtable;
@@ -19,15 +18,16 @@ import java.util.List;
 import java.util.Set;
 
 @Service
-public class CandidateService {
+public class ApplicationService {
 
     @Autowired
-    private CandidateRepo repository;
+    private ApplicationRepo repository;
 
     //When Implemented with the Needl AI engine, will need a new function that will send a post request to store the uploaded file.
-    public Candidate saveCandidate(Candidate candidate) { return repository.save(candidate);}
+    public Application saveApplication(Application application) { return repository.save(application);}
 
-    public Candidate CreateCandidate(Position position, Candidate candidate)
+    //Not Implemented Yet
+    public Application CreateCandidate(Position position, Application application)
     {
         //Prep JSON object to send to AI app for data processing
         JSONObject candidateRequest = new JSONObject();
@@ -50,8 +50,8 @@ public class CandidateService {
         candidateRequest.put("certifications",certs); */
 
         Dictionary candidateDict = new Hashtable();
-        candidateDict.put("uniqueID",candidate.getCandidate_id());
-        candidateDict.put("resume_path",candidate.getResume_path());
+        candidateDict.put("uniqueID", application.getApplication_id());
+        candidateDict.put("resume_path", application.getResume_path());
 
         candidateRequest.put("candidates",candidateDict);
 
@@ -68,24 +68,24 @@ public class CandidateService {
         // TODO: candidate.skills not built yet
         //Check skills - if present link, if absent create and link
         //Check certifications - if present link, if absent create and link
-        candidate.setEducation((String) tempCandidate.getJSONObject("candidate").get("education"));
-        return repository.save(candidate);
+        application.setEducation((String) tempCandidate.getJSONObject("candidate").get("education"));
+        return repository.save(application);
     }
 
-    public List<Candidate> saveCandidates(List<Candidate> candidates){
-        return repository.saveAll(candidates);
+    public List<Application> saveApplications(List<Application> applications){
+        return repository.saveAll(applications);
     }
 
-    public List<Candidate> getAllCandidates() {
+    public List<Application> getAllApplications() {
         return repository.findAll();
     }
 
-    public Candidate getCandidateById(long id) {
+    public Application getApplicationById(long id) {
         return repository.findById(id).orElse(null);
     }
 
     //Build in function for calling API
-    public int getScoreForCandidate(Position position, Candidate candidate) //Get all candidates for relevant position
+    public int getScoreForCandidate(Position position, Application application) //Get all candidates for relevant position
     {
         JSONObject scoringObject = new JSONObject();
         scoringObject.put("position_id",position.getPosition_id());
@@ -107,8 +107,8 @@ public class CandidateService {
         scoringObject.put("certifications",certs); */
 
         Dictionary candidateDict = new Hashtable();
-        candidateDict.put("uniqueID",candidate.getCandidate_id());
-        candidateDict.put("resume_path",candidate.getResume_path());
+        candidateDict.put("uniqueID", application.getApplication_id());
+        candidateDict.put("resume_path", application.getResume_path());
 
         scoringObject.put("candidates",candidateDict);
 

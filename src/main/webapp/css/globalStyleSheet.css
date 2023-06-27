@@ -319,7 +319,6 @@ label {
     content: "\2D"; /* Unicode character for "minus" sign (-) */
 }
 .collapsibleContent {
-    padding: 0 18px;
     background-color: var(--grey-light);
     max-height: 0;
     overflow: hidden;

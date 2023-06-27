@@ -9,7 +9,7 @@
         width: 90%;
         padding-top: 1%;
         padding-bottom: 1%;
-        background: linear-gradient(0, var(--geek-blue), var(--geek-blue-light));
+        background: linear-gradient(0, var(--geek-purple), var(--geek-purple-light));
     }
     a.footerLink {
         font-size: 1rem;
@@ -63,11 +63,11 @@
 </style>
 
 <div class="footerWrapper">
-    <h1 class="footerTitle" style="font-size:clamp(1.5rem, 3vw, 3rem);">CandidateSI</h1>
-    <a class="footerLink" href="www.candidate.tech">www.candidate.tech</a>
-    <li class="footerLI">(000) 000 - 0000</li>
+    <h1 class="footerTitle" style="font-size:clamp(1.5rem, 3vw, 3rem);">GeekSI</h1>
+    <a class="footerLink" href="www.geeksi.tech">www.geeksi.tech</a>
+    <li class="footerLI">(202) 888 - 6556</li>
     <div class="footerList">
-        <li class="footerLI">XXXX</li>
+        <li class="footerLI">1900 South Monroe St</li>
         <li class="footerLI">Suite 100</li>
         <li class="footerLI">Tallahassee, FL 32301</li>
     </div>

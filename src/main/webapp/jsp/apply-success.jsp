@@ -9,19 +9,23 @@
         <jsp:include page="header.jsp"/>
         <link rel="stylesheet" href="../css/globalStyleSheet.css">
         <link rel="stylesheet" href="../css/index.css">
+        <link rel="stylesheet" href="../css/apply-success.css">
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
         <script src="../js/index.js"></script>
     </head>
     <body>
         <div class="wrapper">
             <div id="content-wrapper" style="display: grid;">
-                <h1 style="text-align: center;">Thank You For Applying!</h1>
-                <button style="width: 15%; margin: auto;" id="button_return">Return Home</button>
+                <h1 style="text-align: center;">${applyText}</h1>
+                <button  id="button-return">Return Home</button>
                 <br>
-                <button style="width: 20%; margin: auto;" id="button-positions">View Other Positions</button>
+                <button id="button-positions">View Other Positions</button>
             </div>
         </div>
     </body>
+    <footer>
+        <jsp:include page="footer.jsp"/>
+    </footer>
     <script>
         $(document).ready(function(){
             var token = $("meta[name='_csrf']").attr("content");
@@ -62,7 +66,7 @@
              * Return to the Home Page
              * -sends you back to the home page
              */
-            $('#button_return').on('click', function(){
+            $('#button-return').on('click', function(){
                 positionID = urlParams.get('id')   // retrieves the url param id of the position
                 $.ajax({
                     type: "GET",

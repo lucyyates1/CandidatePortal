@@ -83,3 +83,83 @@ input[type="text"] {
 input[type="text"]:hover {
     background: var(--geek-purple-lighter);
 }
+
+table{
+    min-width: 0px;
+}
+.collapsibleContent{
+    overflow: auto;
+}
+
+#other_info_container{
+    transition: opacity .2s;
+}
+.apply-header{
+    color: var(--geek-purple);
+    text-align: center;
+}
+.innerWrapper {
+    display: flex;
+    margin-bottom: 2rem;
+}
+.left {
+    flex-grow: .3;
+    flex-basis: 0;
+}
+.right {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+}
+.info{
+    background-color: lightgrey;
+    position: fixed;
+    width: 35%;
+    top: 14%;
+    left: 1%;
+    border-radius: 10px 10px 0px 0px;
+    height: 10%;
+}
+.description{
+    background-color: lightgrey;
+    overflow-y: scroll;
+    height: 523px;
+    color: black;
+    padding: 4px;
+    border-radius: 10px;
+}
+
+#position_information_description tr:nth-child(odd) td:nth-child(odd){
+   background-color: var(--geek-purple-light);
+}
+
+#position_information_description tr:nth-child(odd) td:nth-child(even){
+   background-color: var(--grey);
+}
+
+
+#position_information_other td{
+   vertical-align: middle;
+   white-space: normal;
+}
+#position_information_other tr:nth-child(odd) td:nth-child(odd){
+   background-color: var(--geek-purple-lighter);
+}
+
+#position_information_other tr:nth-child(even) td:nth-child(odd){
+   background-color: var(--geek-purple-light);
+}
+
+#position_information_other tr:nth-child(even) td:nth-child(even){
+   background-color: var(--grey);
+}
+td.title{
+   font-weight: bold;
+   width: 14%;
+}
+p.bubble{
+   display: inline;
+   background-color: var(--geek-purple-light);
+   padding: 5px;
+   border-radius: 10px;
+}

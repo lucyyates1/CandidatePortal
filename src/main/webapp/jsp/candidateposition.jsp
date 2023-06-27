@@ -2,19 +2,9 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html>
     <head>
-        <title>Candidates for Position</title>
+        <title>${position.name}</title>
         <link rel="stylesheet" href="../css/globalStyleSheet.css">
-        <style>
-            .backArrow {
-                margin-bottom: 2rem;
-                font-size: 3rem;
-                color: var(--navy);
-                cursor: pointer;
-            }
-            .displayTable td {
-                padding-left: 0;
-            }
-        </style>
+        <link rel="stylesheet" href="../css/candidateposition.css">
         <jsp:include page="header.jsp"/>
     </head>
     <body>
@@ -30,15 +20,15 @@
             <div class="collapsibleContent">
                 <table id="position_information_description" class="displayTable" style="width: 100%; background-color: var(--grey-light); border-radius: 0;">
                     <tr>
-                        <td style="width: 14%">Description: </td>
+                        <td class="title">Description: </td>
                         <td>${position.description}</td>
                     </tr>
                 </table>
             </div>
-            <div style="padding: 0 18px; background-color: var(--grey-light);">
+            <div>
                 <table id="position_information_other" class="displayTable" style="width: 100%; background-color: var(--grey-light); border-radius: 0;">
                     <tr>
-                        <td style="width: 14%">Education: </td>
+                        <td class="title">Education:</td>
                         <c:if test="${position.isEducation_required()}" >
                             <td>${position.getEducation()} (Required)</td>
                         </c:if>
@@ -47,18 +37,45 @@
                         </c:if>
                     </tr>
                     <tr>
-                        <td style="width: 14%">Qualifications: </td>
-                        <td>
-                            <c:forEach var="skill" items="${position.getPosition_skills()}">
-                                <p>${skill.getSkill().getName()}</p>
-                            </c:forEach>
-                            <c:forEach var="certification" items="${position.getPosition_certification()}">
-                                <p>Certification in ${certification.getPosition().getName()}</p>
-                            </c:forEach>
-                        </td>
+                        <td class="title">Skills:</td>
+                        <c:if test="${position.getPosition_skills().size() > 0}">
+                            <td>
+                                <div>
+                                    <ul style="display: inline;">
+                                        <c:forEach var="skill" items="${skills}">
+                                            <li style="display: inline;">
+                                                <p class="bubble">${skill.name}</p>
+                                            </li>
+                                        </c:forEach>
+                                    </ul>
+                                </div>
+                            </td>
+                        </c:if>
+                        <c:if test="${position.getPosition_skills().size() == 0}">
+                            <td></td>
+                        </c:if>
                     </tr>
                     <tr>
-                        <td>Date:</td>
+                        <td class="title">Certifications:</td>
+                        <c:if test="${position.getPosition_certification().size() > 0}">
+                            <td>
+                                <div>
+                                    <ul style="display: inline;">
+                                        <c:forEach var="certification" items="${certifications}">
+                                            <li style="display: inline;">
+                                                <p class="bubble">${certification.name}</p>
+                                            </li>
+                                        </c:forEach>
+                                    </ul>
+                                </div>
+                            </td>
+                        </c:if>
+                        <c:if test="${position.getPosition_certification().size() == 0}">
+                            <td></td>
+                        </c:if>
+                    </tr>
+                    <tr>
+                        <td class="title">Date Posted:</td>
                         <c:if test="${position.date != null}">
                             <td>${position.date.format(formatter)}</td>
                         </c:if>
@@ -67,8 +84,16 @@
                         </c:if>
                     </tr>
                     <tr>
-                        <td style="width: 14%">Place of Performance: </td>
+                        <td class="title">Place of Performance:</td>
                         <td>${position.place_of_performance}</td>
+                    </tr>
+                    <tr>
+                        <td class="title">Job Type:</td>
+                        <td>${type}</td>
+                    </tr>
+                    <tr>
+                        <td class="title">Virtual:</td>
+                        <td>${virtual}</td>
                     </tr>
                 </table>
             </div>

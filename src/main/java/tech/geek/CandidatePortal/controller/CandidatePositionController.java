@@ -1,21 +1,21 @@
 package tech.geek.CandidatePortal.controller;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.multipart.MultipartFile;
 import tech.geek.CandidatePortal.entity.*;
-import tech.geek.CandidatePortal.entity.entityHelper.PositionDataID;
+import tech.geek.CandidatePortal.entity.entityHelper.RecentViewedID;
 import tech.geek.CandidatePortal.services.*;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletResponse;
+import java.sql.Timestamp;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 @Controller
 public class CandidatePositionController {
@@ -23,34 +23,45 @@ public class CandidatePositionController {
     @Autowired
     PositionService positionService;
     @Autowired
-    CandidateService candidateService;
-
-    @Autowired
-    MailService mailService;
-    @Autowired
-    PositionCandidateService positionCandidateService;
-    @Autowired
-    FileService fileService;
-
-    @Autowired
     UserService userService;
+    @Autowired
+    RecentViewedService recentViewedService;
 
 
     @GetMapping("/candidatesposition")
-    public String getPosition(@RequestParam long id, Model m){
-        //This is so the list uses the correct method remove()
-        Long positionId = id;
+    public String getPosition(@RequestParam long id, Model m, HttpServletResponse response){
 
         Position position = positionService.getPositionById(id);
-        List<PositionSkill> skills = position.getPosition_skills().stream().toList();
+        List<Skill> skillList = new ArrayList<>();
+        List<Certification> certificationList = new ArrayList<>();
         for (PositionSkill p: position.getPosition_skills()
              ) {
-            System.out.println(p.getSkill().getName());
+            skillList.add(p.getSkill());
+        }
+        for (PositionCertification c: position.getPosition_certification()
+        ) {
+            certificationList.add(c.getCertification());
         }
         m.addAttribute("position",position);
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy");
         m.addAttribute("formatter",formatter);
-        m.addAttribute("skills", skills);
+        m.addAttribute("skills", skillList);
+        m.addAttribute("certifications", certificationList);
+        m.addAttribute("type", StringUtils.substringBetween(position.getDescription(),"Job Type: ","\n"));
+        m.addAttribute("virtual", StringUtils.substringBetween(position.getDescription(),"Virtual: ","\n"));
+        //Creates a cookie with the position Id and timestamp
+        Cookie cookie = new Cookie(Long.toString(position.getPosition_id()),Long.toString(System.currentTimeMillis()));
+        cookie.setPath("/");
+        cookie.setMaxAge(600);
+        response.addCookie(cookie);
+        /*
+        RecentViewed recentViewed = new RecentViewed();
+        User currentUser = userService.currentUser();
+        recentViewed.setRecentViewedID(new RecentViewedID(position.getPosition_id(), currentUser.getUser_id()));
+        recentViewed.setPosition(position);
+        recentViewed.setUser(currentUser);
+        recentViewed.setLast_viewed(new Timestamp(System.currentTimeMillis()));
+        recentViewedService.saveRecentlyViewed(recentViewed);
         //If the id already exists replace it at the beginning
         if (PositionService.prevViewed.contains(positionId)){
             PositionService.prevViewed.remove(positionId);
@@ -60,70 +71,34 @@ public class CandidatePositionController {
             PositionService.prevViewed.remove(2);
         }
         PositionService.prevViewed.add(0,id);
+        */
         return "candidateposition";
     }
 
     @GetMapping("/positions")
     public String getPositions(Model m){
-        List<Position> positions = positionService.getRecentPositions();
+        List<Position> positions = positionService.getAllPositions();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy");
         m.addAttribute("listPositions", positions);
         m.addAttribute("formatter",formatter);
         return "positions";
     }
 
-    @GetMapping("/applyposition")
-    public String applyPosition(@RequestParam int id, Model m){
-        List<Position> positionList = positionService.getAllPositions();
-        Candidate candidate = new Candidate();
-        PositionCandidate positionCandidate = new PositionCandidate();
-        positionCandidate.setCandidate(candidate);
-        positionCandidate.setPosition(positionService.getPositionById(id));
-        m.addAttribute("positions", positionList);
-        m.addAttribute("selectedPosition", positionService.getPositionById(id));
-        m.addAttribute("positionCandidate", positionCandidate);
-        return "apply-position";
-    }
-
-    @PostMapping("/applyposition")
-    public String confirmPosition(@RequestParam("resume") MultipartFile resume,
-                                  @RequestParam("cover-letter") MultipartFile coverLetter,
-                                  @RequestParam("position-id") Long positionId,
-                                  @RequestParam("first-name") String firstName,
-                                  @RequestParam("last-name") String lastName,
-                                  @RequestParam("text") String notes,
-                                  Model m) throws Exception {
+    @GetMapping("/applied")
+    public String applied(Model model){
         //Declaring Variables
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        String username = auth.getName();
-        Candidate newCandidate = new Candidate();
-        User account = new User();
-        PositionCandidate positionCandidate = new PositionCandidate();
-        Position position = positionService.getPositionById(positionId);
-        newCandidate.setFirst_name(firstName);
-        newCandidate.setLast_name(lastName);
-        for (User user : userService.getAllUsers()){
-            if (username.contains(user.getUsername())){
-                account = user;
+        User account = userService.currentUser();
+        List<Application> applications = account.getApplications().stream().toList();
+        List<Position> positions = new ArrayList<>();
+        for (Application application : applications){
+            for (Application app : applications){
+                positions.add(app.getPosition());
             }
         }
-        //Saves the file to the Resume folder, and returns the file path
-        newCandidate.setResume_path(fileService.saveResume(resume));
-        if (coverLetter != null){
-            //Set the cover letter path to the cover letter (NOT IMPLEMENTED YET)
-        }
-        newCandidate.setNotes(notes);
-        //Saving the Candidate in the database
-        newCandidate = candidateService.saveCandidate(newCandidate);
-
-        //Setting up the candidatePosition Object
-        positionCandidate.setPosition(position);
-        positionCandidate.setCandidate(newCandidate);
-
-        //Setting the proper ids to the object.
-        positionCandidate.setId(new PositionDataID(positionId, newCandidate.getCandidate_id()));
-        positionCandidate = positionCandidateService.savePositionCandidate(positionCandidate);
-        System.out.println(mailService.sendConfirmation(account,position.getName(),position.getUserGroup().getName()));
-        return "apply-success";
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy");
+        model.addAttribute("listCandidates", applications);
+        model.addAttribute("listPositions",positions);
+        model.addAttribute("formatter",formatter);
+        return "active-application";
     }
 }

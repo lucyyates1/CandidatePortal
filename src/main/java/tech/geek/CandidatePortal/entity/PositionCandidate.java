@@ -2,7 +2,6 @@ package tech.geek.CandidatePortal.entity;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
-import org.hibernate.annotations.ColumnDefault;
 import org.springframework.format.annotation.DateTimeFormat;
 import tech.geek.CandidatePortal.entity.entityHelper.PositionDataID;
 
@@ -27,7 +26,7 @@ public class PositionCandidate {
     @ManyToOne
     @MapsId("candidateId")
     @JoinColumn(name="candidate_id")
-    private Candidate candidate;
+    private Application application;
 
     @Column(columnDefinition = "TINYINT")
     private int current_interview;
@@ -50,10 +49,10 @@ public class PositionCandidate {
     public PositionCandidate() {
     }
 
-    public PositionCandidate(PositionDataID id, Position position, Candidate candidate, int current_interview, LocalDate technical_interview_date, LocalDate offer_date, LocalDate filled_date, int score, LocalDate score_run_date) {
+    public PositionCandidate(PositionDataID id, Position position, Application application, int current_interview, LocalDate technical_interview_date, LocalDate offer_date, LocalDate filled_date, int score, LocalDate score_run_date) {
         this.id = id;
         this.position = position;
-        this.candidate = candidate;
+        this.application = application;
         this.current_interview = current_interview;
         this.technical_interview_date = technical_interview_date;
         this.offer_date = offer_date;
@@ -78,12 +77,12 @@ public class PositionCandidate {
         this.position = position;
     }
 
-    public Candidate getCandidate() {
-        return candidate;
+    public Application getCandidate() {
+        return application;
     }
 
-    public void setCandidate(Candidate candidate) {
-        this.candidate = candidate;
+    public void setCandidate(Application application) {
+        this.application = application;
     }
 
     public int getCurrent_interview() {

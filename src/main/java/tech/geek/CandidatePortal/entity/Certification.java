@@ -14,8 +14,13 @@ public class Certification {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long certification_id;
 
-    @OneToMany
-    private Set<CandidateCertification> candidate_certifications = new HashSet<>();
+    @OneToMany(mappedBy = "certification")
+    @JsonBackReference
+    private Set<ApplicationCertification> application_certifications = new HashSet<>();
+
+    @OneToMany(mappedBy = "certification")
+    @JsonBackReference
+    private Set<PositionCertification> position_certifications = new HashSet<>();
 
     @Column(length = 100)
     private String name;
@@ -23,9 +28,10 @@ public class Certification {
     public Certification() {
     }
 
-    public Certification(long certification_id, Set<CandidateCertification> candidate_certifications, String name) {
+    public Certification(long certification_id, Set<ApplicationCertification> application_certifications, Set<PositionCertification> position_certifications, String name) {
         this.certification_id = certification_id;
-        this.candidate_certifications = candidate_certifications;
+        this.application_certifications = application_certifications;
+        this.position_certifications = position_certifications;
         this.name = name;
     }
 
@@ -37,12 +43,20 @@ public class Certification {
         this.certification_id = certification_id;
     }
 
-    public Set<CandidateCertification> getCandidate_certifications() {
-        return candidate_certifications;
+    public Set<ApplicationCertification> getApplication_certifications() {
+        return application_certifications;
     }
 
-    public void setCandidate_certifications(Set<CandidateCertification> candidate_certifications) {
-        this.candidate_certifications = candidate_certifications;
+    public void setApplication_certifications(Set<ApplicationCertification> application_certifications) {
+        this.application_certifications = application_certifications;
+    }
+
+    public Set<PositionCertification> getPosition_certifications() {
+        return position_certifications;
+    }
+
+    public void setPosition_certifications(Set<PositionCertification> position_certifications) {
+        this.position_certifications = position_certifications;
     }
 
     public String getName() {

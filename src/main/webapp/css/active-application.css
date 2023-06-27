@@ -1,0 +1,12 @@
+td.positionName:hover {
+    color: var(--geek-purple);
+}
+.header{
+    color: var(--geek-purple);
+    text-align: center;
+}
+.contentTableWrapper{
+    display: flex;
+    justify-content: center;
+    min-height: 0px;
+}

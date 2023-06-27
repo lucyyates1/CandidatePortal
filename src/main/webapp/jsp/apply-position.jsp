@@ -9,42 +9,10 @@
         <title>Application</title>
         <jsp:include page="header.jsp"/>
         <link rel="stylesheet" href="../css/globalStyleSheet.css">
-         <link rel="stylesheet" href="../css/applyPosition.css">
+        <link rel="stylesheet" href="../css/apply-position.css">
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
         <style>
-        .apply-header{
-            color: var(--geek-purple);
-            text-align: center;
-        }
-        .innerWrapper {
-            display: flex;
-            margin-bottom: 2rem;
-        }
-        .left {
-            flex-grow: .3;
-            flex-basis: 0;
-        }
-        .right {
-            display: flex;
-            flex-direction: column;
-            flex-grow: 1;
-        }
-        .info{
-            background-color: lightgrey;
-            position: fixed;
-            width: 30%;
-            top: 18%;
-            height: 500px;
-            border-radius: 10px;
-        }
-        .description{
-            background-color: lightgrey;
-            overflow-y: scroll;
-            height: 580px;
-            color: black;
-            padding: 4px;
-            border-radius: 10px;
-           }
+
         </style>
     </head>
     <body>
@@ -53,11 +21,84 @@
         <div class="innerWrapper">
             <div class="left">
                 <div class="info">
-                    <h2 style="color: black; padding: 4px;" >${selectedPosition.name}</h2>
+                    <h2 style="color: black; padding: 20px;" >${selectedPosition.name}</h2>
                     <hr>
-                    <p class="description">
-                        ${selectedPosition.description}
-                    </p>
+                    <button type="button" class="collapsible">Position Information</button>
+                    <div class="collapsibleContent">
+                        <table id="position_information_description" class="displayTable" style="width: 100%; background-color: var(--grey-light); border-radius: 0;">
+                            <tr>
+                                <td class="title">Description: </td>
+                                <td>${selectedPosition.description}</td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div id="other_info_container">
+                        <table id="position_information_other" class="displayTable" style="width: 100%; background-color: var(--grey-light); border-radius: 0;">
+                            <tr>
+                                <td class="title">Education:</td>
+                                <c:if test="${selectedPosition.isEducation_required()}" >
+                                    <td>${selectedPosition.getEducation()} (Required)</td>
+                                </c:if>
+                                <c:if test="${!(selectedPosition.isEducation_required())}" >
+                                    <td>${selectedPosition.getEducation()} (Preferred)</td>
+                                </c:if>
+                            </tr>
+                            <tr>
+                                <td class="title">Skills:</td>
+                                <c:if test="${selectedPosition.getPosition_skills().size() > 0}">
+                                    <td>
+                                        <div>
+                                            <ul style="display: inline;">
+                                                <c:forEach var="skill" items="${skills}">
+                                                    <li style="display: inline;">
+                                                        <p class="bubble">${skill.name}</p>
+                                                    </li>
+                                                </c:forEach>
+                                            </ul>
+                                        </div>
+                                    </td>
+                                </c:if>
+                                <c:if test="${selectedPosition.getPosition_skills().size() == 0}">
+                                    <td></td>
+                                </c:if>
+                            </tr>
+                            <tr>
+                                <td class="title">Certifications:</td>
+                                <c:if test="${selectedPosition.getPosition_certification().size() > 0}">
+                                    <td>
+                                        <div>
+                                            <ul style="display: inline;">
+                                                <c:forEach var="certification" items="${certifications}">
+                                                    <li style="display: inline;">
+                                                        <p class="bubble">${certification.name}</p>
+                                                    </li>
+                                                </c:forEach>
+                                            </ul>
+                                        </div>
+                                    </td>
+                                </c:if>
+                                <c:if test="${selectedPosition.getPosition_certification().size() == 0}">
+                                    <td></td>
+                                </c:if>
+                            </tr>
+                            <tr>
+                                <td class="title">Date Posted:</td>
+                                <td>${selectedPosition.date.format(formatter)}</td>
+                            </tr>
+                            <tr>
+                                <td class="title">Place of Performance:</td>
+                                <td>${selectedPosition.place_of_performance}</td>
+                            </tr>
+                            <tr>
+                                <td class="title">Job Type:</td>
+                                <td>${type}</td>
+                            </tr>
+                            <tr>
+                                <td class="title">Virtual:</td>
+                                <td>${virtual}</td>
+                            </tr>
+                        </table>
+                    </div>
                 </div>
             </div>
             <div class="right">
@@ -75,12 +116,21 @@
                             </c:forEach>
                         </select>
                         <label for="candidate-first-name" class="input_label">First Name (*):</label>
-                        <input name="first-name" type="text" id="candidate-first-name" required="required" />
+                        <div>
+                            <input name="first-name" type="text" id="candidate-first-name" />
+                            <span class="error">${firstnameError}</span>
+                        </div>
                         <label for="candidate-last-name" class="input_label">Last Name (*):</label>
-                        <input name="last-name" type="text" id="candidate-last-name" required="required" />
+                        <div>
+                            <input name="last-name" type="text" id="candidate-last-name" />
+                            <span class="error">${lastnameError}</span>
+                        </div>
                         <!-- FILE UPLOADS FOR RESUME -->
                         <label for="resume-upload" class="input_label">Resume (*):</label>
-                        <input id="resume-upload" type="file" name="resume" required="required"/>
+                        <div>
+                            <input id="resume-upload" type="file" name="resume"/>
+                            <span class="error">${resumeError}</span>
+                        </div>
                         <!-- FILE UPLOADS FOR COVER LETTER -->
                         <!-- Need to Add a Cover Letter Path to the candidate table -->
                         <label for="cover-letter-upload" class="input_label">Cover Letter:</label>
@@ -116,6 +166,20 @@
                     xhr.setRequestHeader(header, token);
                 });
             });
+
+            // Handles Collapsible Div
+            $('.collapsible').on('click', function(){
+                this.classList.toggle('active');
+                var content = this.nextElementSibling;
+                var other = document.getElementById("other_info_container")
+                if (content.style.maxHeight){
+                    content.style.maxHeight = null;
+                    other.style.opacity = 1;
+                } else {
+                    content.style.maxHeight = 500 + "px";
+                    other.style.opacity = 0;
+                }
+            })
 
             $(".loadingContainer").hide();
             // Disabling the page while an AJAX request is made

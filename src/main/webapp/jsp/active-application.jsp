@@ -1,44 +1,63 @@
-<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<%@ taglib prefix="security" uri="http://www.springframework.org/security/tags" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+
 <html>
     <head>
         <meta name="_csrf" content="${_csrf.token}"/>
         <meta name="_csrf_header" content="${_csrf.headerName}"/>
-        <title>Positions</title>
-        <link rel="stylesheet" href="../css/globalStyleSheet.css">
-        <link rel="stylesheet" href="../css/positions.css">
+        <title>Active Applications</title>
         <jsp:include page="header.jsp"/>
+        <link rel="stylesheet" href="../css/globalStyleSheet.css">
+        <link rel="stylesheet" href="../css/active-application.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <script src="../js/index.js"></script>
     </head>
     <body>
         <div class="wrapper">
-            <h1>Open Positions for GeekSI</h1>
-            <div class="tableAdjacentGraphic">
-                <div class="contentTableWrapper">
-                    <table id="active_recruiting_positions" class="contentTable">
-                        <thead>
-                            <tr>
-                                <th>Position Name</th>
-                                <th>Position Date</th>
-                                <th>Company</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <!-- Iterate through list and populate table -->
-                            <c:forEach var="position" begin="0" end="${listPositions.size() - 1}">
-                                <tr id="${listPositions.get(position).position_id}">
-                                <td class="positionName">${listPositions.get(position).name}</td>
-                                <c:if test="${listPositions.get(position).date != null}">
-                                    <td>${listPositions.get(position).date.format(formatter)}</td>
+            <h1 class="header" >Currently Active Applications</h1>
+            <div class="contentTableWrapper">
+                <table id="active_recruiting_positions" class="contentTable">
+                    <thead>
+                        <tr>
+                            <th>Position Name</th>
+                            <th>Date Applied</th>
+                            <th>Current Status</th>
+                            <th>Scheduled Date</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Iterate through list and populate table -->
+                        <c:if test="${listCandidates.size() == 0}">
+                        </c:if>
+                        <c:if test="${listCandidates.size() != 0}">
+                            <c:forEach var="candidate" begin="0" end="${listCandidates.size() - 1}">
+                                <tr id="${listPositions.get(candidate).getPosition_id()}">
+                                <td class="positionName">${listPositions.get(candidate).name}</td>
+                                <c:if test="${listCandidates.get(candidate).getInitial_contact_date() != null}">
+                                    <td>${listCandidates.get(candidate).getInitial_contact_date().format(formatter)}</td>
                                 </c:if>
-                                <c:if test="${listPositions.get(position).date == null}">
+                                <c:if test="${listCandidates.get(candidate).getInitial_contact_date() == null}">
                                     <td></td>
                                 </c:if>
-                                <td>${listPositions.get(position).getUserGroup().getName()}</td>
+                                <c:if test="${!(listCandidates.get(candidate).archived)}" >
+                                    <c:if test="${listCandidates.get(candidate).getMeet_and_greet_date() == null}">
+                                        <td>Under Consideration</td>
+                                        <td>N/A</td>
+                                    </c:if>
+                                    <c:if test="${listCandidates.get(candidate).getMeet_and_greet_date() != null}">
+                                        <td> Scheduled Meet And Greet</td>
+                                        <td>${listCandidates.get(candidate).getMeet_and_greet_date().format(formatter)}</td>
+                                    </c:if>
+                                </c:if>
+                                <c:if test="${listCandidates.get(candidate).archived}">
+                                    <td>Archived</td>
+                                    <td>N/A</td>
+                                </c:if>
+                                </tr>
                             </c:forEach>
-                        </tbody>
-                    </table>
-                </div>
-                <img class="puzzleDesk" src="../assets/Puzzle Desk v2.png"/>
+                        </c:if>
+                    </tbody>
+                </table>
             </div>
         </div>
     </body>

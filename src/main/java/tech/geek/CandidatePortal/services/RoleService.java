@@ -33,6 +33,7 @@ public class RoleService {
             if(temp.getRole() == "Unauthorized User")
                 return temp;
         return null;
+
     }
 
     public Role getRoleById(long id) {

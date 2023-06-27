@@ -45,7 +45,6 @@ public class PositionService {
     public List<Position> getAllPositionsAndSkills()
     {
         List<Position> positions = repository.findByTemplate(Boolean.TRUE);
-
         return repository.findByTemplate(Boolean.TRUE);
     }
 

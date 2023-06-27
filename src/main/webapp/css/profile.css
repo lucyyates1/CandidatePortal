@@ -1,0 +1,43 @@
+.apply-header{
+    color: var(--geek-purple);
+    text-align: center;
+    text-decoration: underline;
+}
+.info-container{
+    padding-top: 10px;
+    padding-bottom: 10px;
+    padding-left: 37%;
+}
+.label{
+    font-size: 20px;
+    font-weight: bold;
+    text-decoration: underline;
+    padding: 10px;
+}
+.info{
+    font-size: 20px;
+    padding: 10px;
+}
+input.change-info{
+    width: 40%;
+}
+.password {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+#username-form{
+    display: none;
+}
+#password-form{
+    display: none;
+}
+#first-name-form{
+    display: none;
+}
+#last-name-form{
+    display: none;
+}
+#email-form{
+    display: none;
+}
