@@ -7,7 +7,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import tech.geek.CandidatePortal.entity.*;
-import tech.geek.CandidatePortal.entity.entityHelper.RecentViewedID;
 import tech.geek.CandidatePortal.services.*;
 
 import javax.servlet.http.Cookie;
@@ -24,8 +23,6 @@ public class CandidatePositionController {
     PositionService positionService;
     @Autowired
     UserService userService;
-    @Autowired
-    RecentViewedService recentViewedService;
 
 
     @GetMapping("/candidatesposition")
