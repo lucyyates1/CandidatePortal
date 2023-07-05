@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import tech.geek.CandidatePortal.entity.Application;
 import tech.geek.CandidatePortal.entity.Position;
+import tech.geek.CandidatePortal.entity.PositionCandidate;
 import tech.geek.CandidatePortal.entity.PositionSkill;
 import tech.geek.CandidatePortal.repo.ApplicationRepo;
 
@@ -124,4 +125,11 @@ public class ApplicationService {
         return scoreReturn;
     }
 
+    public List<Application> getAllFilledPositionCandidates() {
+        return repository.getAllFilledPositionCandidates();
+    }
+
+    public List<Application> getApplicationsByPosition(Position position) {
+        return repository.getApplicationsByPosition(position);
+    }
 }

@@ -11,9 +11,9 @@
         <link rel="stylesheet" href="../css/globalStyleSheet.css">
         <link rel="stylesheet" href="../css/apply-position.css">
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-        <style>
-
-        </style>
+        <script src="https://malsup.github.io/jquery.form.js"></script>
+        <script src="../js/apply-position.js"></script>
+        <script type="text/javascript"></script>
     </head>
     <body>
     <div class="wrapper">
@@ -117,28 +117,26 @@
                         </select>
                         <label for="candidate-first-name" class="input_label">First Name (*):</label>
                         <div>
-                            <input name="first-name" type="text" id="candidate-first-name" />
-                            <span class="error">${firstnameError}</span>
+                            <input name="first-name" type="text" id="candidate-first-name" required/>
                         </div>
                         <label for="candidate-last-name" class="input_label">Last Name (*):</label>
                         <div>
-                            <input name="last-name" type="text" id="candidate-last-name" />
-                            <span class="error">${lastnameError}</span>
+                            <input name="last-name" type="text" id="candidate-last-name" required/>
                         </div>
                         <!-- FILE UPLOADS FOR RESUME -->
                         <label for="resume-upload" class="input_label">Resume (*):</label>
                         <div>
-                            <input id="resume-upload" type="file" name="resume"/>
-                            <span class="error">${resumeError}</span>
+                            <input id="resume-upload" type="file" name="resume" accept=".doc,.docx,.pdf" required/>
                         </div>
                         <!-- FILE UPLOADS FOR COVER LETTER -->
                         <!-- Need to Add a Cover Letter Path to the candidate table -->
                         <label for="cover-letter-upload" class="input_label">Cover Letter:</label>
-                        <input id="cover-letter-upload" type="file" name="cover-letter" />
+                        <input id="cover-letter-upload" type="file" name="cover-letter" accept=".doc,.docx,.pdf" />
                         <label for="candidate-notes" class="input_label">Comments:</label>
-                        <textarea name="text" type="text" id="candidate-notes" style="height: 200px; width: 70%;"></textarea>
+                        <textarea name="notes" type="text" id="candidate-notes" style="height: 200px; width: 70%;"></textarea>
                         <p></p>
                         <button style="margin: 50px; width: 40%" type="submit" id="button_apply">Submit</button>
+                        <!--Change to JS-->
                     </div>
                 </form:form>
             </div>
@@ -149,55 +147,36 @@
         <jsp:include page="footer.jsp"/>
     </footer>
     <script>
-        $(document).ready(function(){
-            var token = $("meta[name='_csrf']").attr("content");
-            var header = $("meta[name='_csrf_header']").attr("content");
+    //Handles Collapsable content
+    $('.collapsible').on('click', function(){
+        this.classList.toggle('active');
+        var content = this.nextElementSibling;
+        var other = document.getElementById("other_info_container")
+        if (content.style.maxHeight){
+            content.style.maxHeight = null;
+            other.style.opacity = 1;
+        } else {
+            content.style.maxHeight = 500 + "px";
+            other.style.opacity = 0;
+        }
+    });
 
-            const queryString = window.location.search
-            const urlParams = new URLSearchParams(queryString)
-
-            /*
-            * Adding CSRF token to AJAX header
-            */
-            $(function () {
-                var token = $("input[name='_csrf']").val();
-                var header = "X-CSRF-TOKEN";
-                $(document).ajaxSend(function(e, xhr, options) {
-                    xhr.setRequestHeader(header, token);
-                });
-            });
-
-            // Handles Collapsible Div
-            $('.collapsible').on('click', function(){
-                this.classList.toggle('active');
-                var content = this.nextElementSibling;
-                var other = document.getElementById("other_info_container")
-                if (content.style.maxHeight){
-                    content.style.maxHeight = null;
-                    other.style.opacity = 1;
-                } else {
-                    content.style.maxHeight = 500 + "px";
-                    other.style.opacity = 0;
-                }
-            })
-
-            $(".loadingContainer").hide();
-            // Disabling the page while an AJAX request is made
-            $(document).ajaxStart(function () {
-                $("*").css('pointer-events','none');
-                $("*").css('overflow','hidden');
-                $("body").css('background-color','var(--grey-light)');
-                $("body").css('opacity','0.5');
-                $(".loadingContainer").show();
-            });
-            // Enabling the page once the AJAX request returns
-            $(document).ajaxStop(function () {
-                $("*").css('pointer-events','');
-                $("*").css('overflow','');
-                $("body").css('background-color','');
-                $("body").css('opacity','');
-                $(".loadingContainer").hide();
-            });
-         });
+    $(".loadingContainer").hide();
+    // Disabling the page while an AJAX request is made
+    $(document).ajaxStart(function () {
+        $("*").css('pointer-events','none');
+        $("*").css('overflow','hidden');
+        $("body").css('background-color','var(--grey-light)');
+        $("body").css('opacity','0.5');
+        $(".loadingContainer").show();
+    });
+    // Enabling the page once the AJAX request returns
+    $(document).ajaxStop(function () {
+        $("*").css('pointer-events','');
+        $("*").css('overflow','');
+        $("body").css('background-color','');
+        $("body").css('opacity','');
+        $(".loadingContainer").hide();
+    });
     </script>
 </html>

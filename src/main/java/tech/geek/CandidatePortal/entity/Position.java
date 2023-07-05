@@ -21,7 +21,7 @@ public class Position {
 
     @OneToMany(mappedBy = "position")
     @JsonIgnore
-    private Set<PositionCandidate> position_candidates = new HashSet<>();
+    private Set<Application> applications = new HashSet<>();
 
     @OneToMany(mappedBy = "position")
     @JsonIgnore
@@ -66,12 +66,16 @@ public class Position {
 
     private boolean archived;
 
+    private int scored_candidates;
+
+    private int total_candidates;
+
     public Position() {}
 
-    public Position(long position_id, Set<PositionCandidate> position_candidates, Set<PositionSkill> position_skill, Set<PositionCertification> position_certification, UserGroup userGroup, Client client, String name, LocalDate date, String description, String education, boolean education_required, int experience_required, String place_of_performance, boolean template, boolean archived) {
+    public Position(long position_id, Set<Application> applications, Set<PositionSkill> position_skills, Set<PositionCertification> position_certification, UserGroup userGroup, Client client, String name, LocalDate date, String description, String education, boolean education_required, int experience_required, String place_of_performance, boolean template, boolean archived, int scored_candidates, int total_candidates) {
         this.position_id = position_id;
-        this.position_candidates = position_candidates;
-        this.position_skills = position_skill;
+        this.applications = applications;
+        this.position_skills = position_skills;
         this.position_certification = position_certification;
         this.userGroup = userGroup;
         this.client = client;
@@ -84,12 +88,40 @@ public class Position {
         this.place_of_performance = place_of_performance;
         this.template = template;
         this.archived = archived;
+        this.scored_candidates = scored_candidates;
+        this.total_candidates = total_candidates;
     }
 
-    public long getPosition_id() { return position_id; }
+    public long getPosition_id() {
+        return position_id;
+    }
 
     public void setPosition_id(long position_id) {
         this.position_id = position_id;
+    }
+
+    public Set<Application> getApplications() {
+        return applications;
+    }
+
+    public void setApplications(Set<Application> applications) {
+        this.applications = applications;
+    }
+
+    public Set<PositionSkill> getPosition_skills() {
+        return position_skills;
+    }
+
+    public void setPosition_skills(Set<PositionSkill> position_skills) {
+        this.position_skills = position_skills;
+    }
+
+    public Set<PositionCertification> getPosition_certification() {
+        return position_certification;
+    }
+
+    public void setPosition_certification(Set<PositionCertification> position_certification) {
+        this.position_certification = position_certification;
     }
 
     public UserGroup getUserGroup() {
@@ -128,25 +160,41 @@ public class Position {
         return description;
     }
 
-    public void setDescription(String description) { this.description = description; }
+    public void setDescription(String description) {
+        this.description = description;
+    }
 
-    public String getEducation() { return education; }
+    public String getEducation() {
+        return education;
+    }
 
-    public void setEducation(String education) { this.education = education; }
+    public void setEducation(String education) {
+        this.education = education;
+    }
 
-    public boolean isEducation_required() { return education_required; }
+    public boolean isEducation_required() {
+        return education_required;
+    }
 
-    public void setEducation_required(boolean education_required) { this.education_required = education_required; }
+    public void setEducation_required(boolean education_required) {
+        this.education_required = education_required;
+    }
 
-    public int getExperience_required() { return experience_required; }
+    public int getExperience_required() {
+        return experience_required;
+    }
 
-    public void setExperience_required(int experience_required) { this.experience_required = experience_required; }
+    public void setExperience_required(int experience_required) {
+        this.experience_required = experience_required;
+    }
 
     public String getPlace_of_performance() {
         return place_of_performance;
     }
 
-    public void setPlace_of_performance(String place_of_performance) { this.place_of_performance = place_of_performance; }
+    public void setPlace_of_performance(String place_of_performance) {
+        this.place_of_performance = place_of_performance;
+    }
 
     public boolean isTemplate() {
         return template;
@@ -154,34 +202,6 @@ public class Position {
 
     public void setTemplate(boolean template) {
         this.template = template;
-    }
-
-    public Set<PositionCandidate> getPosition_candidates() {
-        return position_candidates;
-    }
-
-    public void setPosition_candidates(Set<PositionCandidate> position_candidates) {
-        this.position_candidates = position_candidates;
-    }
-
-    public Set<PositionSkill> getPosition_skills() {
-        return position_skills;
-    }
-
-    public void setPosition_skill(Set<PositionSkill> position_skill) {
-        this.position_skills = position_skill;
-    }
-
-    public Set<PositionCertification> getPosition_certification() {
-        return position_certification;
-    }
-
-    public void setPosition_certification(Set<PositionCertification> position_certification) {
-        this.position_certification = position_certification;
-    }
-
-    public void setPosition_skills(Set<PositionSkill> position_skills) {
-        this.position_skills = position_skills;
     }
 
     public boolean isArchived() {
@@ -192,11 +212,27 @@ public class Position {
         this.archived = archived;
     }
 
+    public int getScored_candidates() {
+        return scored_candidates;
+    }
+
+    public void setScored_candidates(int scored_candidates) {
+        this.scored_candidates = scored_candidates;
+    }
+
+    public int getTotal_candidates() {
+        return total_candidates;
+    }
+
+    public void setTotal_candidates(int total_candidates) {
+        this.total_candidates = total_candidates;
+    }
+
     @Override
     public String toString() {
         return "Position{" +
                 "position_id=" + position_id +
-                ", position_candidates=" + position_candidates +
+                ", applications=" + applications +
                 ", position_skills=" + position_skills +
                 ", position_certification=" + position_certification +
                 ", userGroup=" + userGroup +
@@ -210,6 +246,8 @@ public class Position {
                 ", place_of_performance='" + place_of_performance + '\'' +
                 ", template=" + template +
                 ", archived=" + archived +
+                ", scored_candidates=" + scored_candidates +
+                ", total_candidates=" + total_candidates +
                 '}';
     }
 }

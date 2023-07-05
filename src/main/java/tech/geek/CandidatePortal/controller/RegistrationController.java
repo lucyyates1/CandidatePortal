@@ -115,7 +115,7 @@ public class RegistrationController {
 
         List<Role> roles = roleService.getAllRoles();
         for (Role role : roles) {
-            if (Objects.equals(role.getRole(), "Unauthorized user")) {
+            if (Objects.equals(role.getRole(), "ROLE_UNAUTHORIZEDUSER")) {
                 user.setRole(role);
                 break;
             }

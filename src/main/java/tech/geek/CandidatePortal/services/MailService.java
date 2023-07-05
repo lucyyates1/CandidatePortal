@@ -39,4 +39,24 @@ public class MailService {
         }
         return true;
     }
+
+    public boolean sendInvite(User user) {
+        try{
+            //Setting up the message to be sent.
+            SimpleMailMessage mailMessage = new SimpleMailMessage();
+            mailMessage.setFrom(sender);
+            mailMessage.setTo(user.getEmail());
+            mailMessage.setSubject("WIP");
+
+            //This can always be changed but will be the body of the email.
+            mailMessage.setText("THIS IS NOT DONE");
+
+            //Sends the email and returns true if it succeeds
+            javaMailSender.send(mailMessage);
+        }
+        catch (Exception e){
+            return false;
+        }
+        return true;
+    }
 }

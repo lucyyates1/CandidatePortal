@@ -47,11 +47,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         authenticationManagerBuilder.userDetailsService(userDetailsService);
     }
     @Override
-    protected void configure(HttpSecurity http) throws Exception {
+    protected void configure(HttpSecurity http) throws Exception
+    {
         http
                 .cors().and()
                 .authorizeRequests()
-                .antMatchers("/css/globalStyleSheet.css", "/register", "/error").permitAll()
+                .antMatchers("/css/globalStyleSheet.css","/error","/register").permitAll()
+                .antMatchers("/admin*").hasAnyRole("ADMIN","SUPERADMIN")
                 .anyRequest().authenticated()
                 .and()
                 .formLogin()
@@ -61,9 +63,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .logout()
                 .permitAll();
-        //Need this for the form request on the Apply Page to work
-        http.csrf().disable();
-
     }
 
     @Bean

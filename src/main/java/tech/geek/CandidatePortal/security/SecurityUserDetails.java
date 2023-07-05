@@ -13,15 +13,17 @@ public class SecurityUserDetails implements UserDetails {
 
     private String username;
     private String password;
+    private String role;
 
     public SecurityUserDetails(User user) {
         this.username = user.getUsername();
         this.password = user.getPassword();
+        this.role = user.getRole().getRole();
     }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return Arrays.asList(new SimpleGrantedAuthority("BASIC_ROLE"));
+        return Arrays.asList(new SimpleGrantedAuthority(role));
     }
 
     @Override

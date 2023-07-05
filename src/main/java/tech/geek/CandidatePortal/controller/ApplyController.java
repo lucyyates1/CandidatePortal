@@ -2,6 +2,8 @@ package tech.geek.CandidatePortal.controller;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -73,56 +75,11 @@ public class ApplyController {
         return "apply-position";
     }
 
-    @PostMapping("/applyposition")
-    public String confirmPosition(@RequestParam("resume") MultipartFile resume,
-                                  @RequestParam("cover-letter") MultipartFile coverLetter,
-                                  @RequestParam("position-id") Long positionId,
-                                  @RequestParam("first-name") String firstName,
-                                  @RequestParam("last-name") String lastName,
-                                  @RequestParam("text") String notes,
-                                  RedirectAttributes attributes,
-                                  Model m) throws Exception {
-        //Declaring Variables
-        String firstnameError = "";
-        String lastnameError = "";
-        String resumeError = "";
-        boolean firstnameEntered = (firstName.length() > 0);
-        boolean lastnameEntered = (lastName.length() > 0);
-        boolean resumeEntered = (resume.getOriginalFilename() != "");
-        Application newApplication = new Application();
-        User account = userService.currentUser();
-        Position position = positionService.getPositionById(positionId);
-        newApplication.setFirst_name(firstName);
-        newApplication.setLast_name(lastName);
-
-        //Checks For Valid Fields
-        if (!firstnameEntered || !lastnameEntered || !resumeEntered ) {
-            if (!firstnameEntered)
-                firstnameError = "Field Required";
-            if (!lastnameEntered)
-                lastnameError = "Field Required";
-            if (!resumeEntered)
-                resumeError = "Please Upload A Resume (.doc,.docx, .pdf)";
-            attributes.addFlashAttribute("firstnameError", firstnameError);
-            attributes.addFlashAttribute("lastnameError", lastnameError);
-            attributes.addFlashAttribute("resumeError", resumeError);
-            return "redirect:/applyposition?id=" + positionId;
-        }
-        newApplication.setUser(account);
-        newApplication.setPosition(position);
-        newApplication.setInitial_contact_date(LocalDate.now());
-
-        //Saves the file to the Resume folder, and returns the file path
-        newApplication.setResume_path(fileService.saveResume(resume));
-        if (coverLetter != null){
-            //Set the cover letter path to the cover letter (NOT IMPLEMENTED YET)
-        }
-        newApplication.setNotes(notes);
-        //Saving the Candidate in the database
-        newApplication = applicationService.saveApplication(newApplication);
-
-        System.out.println(mailService.sendConfirmation(account,position.getName(),position.getUserGroup().getName()));
-        m.addAttribute("applyText","Thank You For Applying!");
+    @GetMapping("/applySuccess")
+    public String applySuccess(Model model){
+        model.addAttribute("applyText", "Thank You For Applying!");
         return "apply-success";
     }
+
+
 }

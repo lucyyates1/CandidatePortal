@@ -12,6 +12,7 @@ import tech.geek.CandidatePortal.services.*;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
 import java.sql.Timestamp;
+import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
@@ -23,12 +24,30 @@ public class CandidatePositionController {
     PositionService positionService;
     @Autowired
     UserService userService;
+    @Autowired
+    ApplicationService applicationService;
 
 
     @GetMapping("/candidatesposition")
-    public String getPosition(@RequestParam long id, Model m, HttpServletResponse response){
+    public String getPosition(@RequestParam(value="id") Long positionID, Model model, HttpServletResponse response){
 
-        Position position = positionService.getPositionById(id);
+        if (userService.currentUser().getRole().getRole_id() != 4){;
+            Position position = positionService.findById(positionID);
+            List<Application> listCandidates = applicationService.getApplicationsByPosition(position);
+            // TODO: Candidate archival isn't possible yet
+            //listCandidates.removeIf(Candidate::isArchived);
+
+            // TODO: Sort listPositionCandidates based on listCandidates order of candidate_id
+            // May not be necessary
+
+            model.addAttribute("position", position);
+            model.addAttribute("listCandidates", listCandidates);
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy");
+            model.addAttribute("formatter", formatter);
+
+            return "needl-candidatesposition";
+        }
+        Position position = positionService.getPositionById(positionID);
         List<Skill> skillList = new ArrayList<>();
         List<Certification> certificationList = new ArrayList<>();
         for (PositionSkill p: position.getPosition_skills()
@@ -39,13 +58,13 @@ public class CandidatePositionController {
         ) {
             certificationList.add(c.getCertification());
         }
-        m.addAttribute("position",position);
+        model.addAttribute("position",position);
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy");
-        m.addAttribute("formatter",formatter);
-        m.addAttribute("skills", skillList);
-        m.addAttribute("certifications", certificationList);
-        m.addAttribute("type", StringUtils.substringBetween(position.getDescription(),"Job Type: ","\n"));
-        m.addAttribute("virtual", StringUtils.substringBetween(position.getDescription(),"Virtual: ","\n"));
+        model.addAttribute("formatter",formatter);
+        model.addAttribute("skills", skillList);
+        model.addAttribute("certifications", certificationList);
+        model.addAttribute("type", StringUtils.substringBetween(position.getDescription(),"Job Type: ","\n"));
+        model.addAttribute("virtual", StringUtils.substringBetween(position.getDescription(),"Virtual: ","\n"));
         //Creates a cookie with the position Id and timestamp
         Cookie cookie = new Cookie(Long.toString(position.getPosition_id()),Long.toString(System.currentTimeMillis()));
         cookie.setPath("/");
@@ -69,16 +88,55 @@ public class CandidatePositionController {
         }
         PositionService.prevViewed.add(0,id);
         */
+
         return "candidateposition";
     }
 
+    //Candidate Side
     @GetMapping("/positions")
     public String getPositions(Model m){
+        if (userService.currentUser().getRole().getRole_id() != 4){
+            return "redirect:/recruiting";
+        }
         List<Position> positions = positionService.getAllPositions();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy");
         m.addAttribute("listPositions", positions);
         m.addAttribute("formatter",formatter);
         return "positions";
+    }
+
+    //Recruiting side
+    @GetMapping("/recruiting")
+    public String recruiting(Model model)
+    {
+        if (userService.currentUser().getRole().getRole_id() == 4){
+            return "redirect:/positions";
+        }
+        // Creating list of positions to send to front end
+        List<Position> listPositions = positionService.getAllPositions();
+        listPositions.removeIf(Position::isArchived);
+        listPositions.removeIf(Position::isTemplate);
+        model.addAttribute("listPositions", listPositions);
+
+        // Creating a list of dates to send to front end
+        //  - Necessary because we need to format the dates
+        List<LocalDate> listFilDates = new ArrayList<>();
+
+        for (Position pos : listPositions) {
+            LocalDate tempFill = null;
+            for(Application application: pos.getApplications()) {
+                if(application.getFilled_date() != null)
+                    tempFill = application.getFilled_date();
+            }
+            listFilDates.add(tempFill);
+        }
+
+
+        model.addAttribute("listFilDates", listFilDates);
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy");
+        model.addAttribute("formatter", formatter);
+
+        return "recruiting";
     }
 
     @GetMapping("/applied")

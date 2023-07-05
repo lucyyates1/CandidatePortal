@@ -25,7 +25,7 @@
                 <button onclick="openUser()">Change Username</button>
                 <span class="error">${usernameError}</span>
                 <div id="username-form">
-                    <form method="POST" action="/changeusername">
+                    <form method="POST" action="/changeusername" id="change-username">
                         <input class="change-info" name="username" type="text" placeholder="Enter New Username"/>
                         <button type="submit">Confirm</button>
                         <button type="button" onclick="closeUser()">Cancel</button>
@@ -37,7 +37,7 @@
                 <button onclick="openPassword()">Change Password</button>
                 <span class="error">${passwordError}</span>
                 <div id="password-form">
-                    <form method="POST" action="/changepassword">
+                    <form method="POST" action="/changepassword" id="change-password">
                         <input class="change-info" name="originalPassword" type="password" placeholder="Enter Current Password"/>
                         <div class="password">
                             <input class="formInput" type="password" name="newPassword" placeholder="Enter New Password" spellcheck="false"/>
@@ -57,7 +57,7 @@
                 <span class="info">${user.first_name}</span>
                 <button onclick="openFirstName()">Change First Name</button>
                 <div id="first-name-form">
-                    <form method="POST" action="/changefirstname">
+                    <form method="POST" action="/changefirstname" id="change-first-name">
                         <input class="change-info" name="firstname" type="text" placeholder="Enter First Name"/>
                         <button type="submit">Confirm</button>
                         <button type="button" onclick="closeFirstName()">Cancel</button>
@@ -70,7 +70,7 @@
                 <span class="info">${user.last_name}</span>
                 <button onclick="openLastName()">Change Last Name</button>
                 <div id="last-name-form">
-                    <form method="POST" action="/changelastname">
+                    <form method="POST" action="/changelastname" id="change-last-name">
                         <input class="change-info" name="lastname" type="text" placeholder="Enter Last Name"/>
                         <button type="submit">Confirm</button>
                         <button type="button" onclick="closeLastName()">Cancel</button>
@@ -83,7 +83,7 @@
                 <button onclick="openEmail()">Change Email</button>
                 <span class="error">${emailError}</span>
                 <div id="email-form">
-                    <form method="POST" action="/changeEmail">
+                    <form method="POST" action="/changeEmail" id="change-email">
                         <input class="change-info" name="newEmail" type="text" placeholder="Enter New Email"/>
                         <input class="change-info" name="confirmEmail" type="text" placeholder="Confirm New Email"/>
                         <button type="submit" id="button_apply">Confirm</button>

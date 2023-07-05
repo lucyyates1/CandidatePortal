@@ -34,47 +34,86 @@ public class IndexController {
     @GetMapping("/")
     public String home(Model model, HttpServletRequest request) {
 
-        //Fills the array with the recently viewed positions
-        List<Position> listPositions = positionService.getAllPositions();
-        listPositions.removeIf(Position::isTemplate);
-        List<Position> listRecent = new ArrayList<>();
-        Cookie [] cookies = request.getCookies();
-        SortedMap<Long, Long> positionHistory = new TreeMap<>(Collections.reverseOrder());
-        if (cookies != null){
-            for (Cookie c: cookies
-                 ) {
-                try {
-                    //We flip the value and name to order the list by timestamp in descending order
-                    positionHistory.put(Long.parseLong(c.getValue()), Long.parseLong(c.getName()));
-                } catch (Exception e) {
+
+        User currentUser = userService.currentUser();
+        //If user is candidate
+        if (currentUser.getRole().getRole_id() == 4){
+            //Fills the array with the recently viewed positions
+            List<Position> listPositions = positionService.getAllPositions();
+            listPositions.removeIf(Position::isTemplate);
+            List<Position> listRecent = new ArrayList<>();
+            Cookie [] cookies = request.getCookies();
+            SortedMap<Long, Long> positionHistory = new TreeMap<>(Collections.reverseOrder());
+            if (cookies != null){
+                for (Cookie c: cookies
+                ) {
+                    try {
+                        //We flip the value and name to order the list by timestamp in descending order
+                        positionHistory.put(Long.parseLong(c.getValue()), Long.parseLong(c.getName()));
+                    } catch (Exception e) {
+                    }
+                }
+                for (Long timestamp : positionHistory.keySet()){
+                    //Converts the Map to a List to pass into the Model
+                    if (listRecent.size() < 5)
+                        listRecent.add(positionService.getPositionById(positionHistory.get(timestamp)));
                 }
             }
-            for (Long timestamp : positionHistory.keySet()){
-                //Converts the Map to a List to pass into the Model
-                if (listRecent.size() < 5)
-                    listRecent.add(positionService.getPositionById(positionHistory.get(timestamp)));
-            }
-        }
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        String username = auth.getName();
+            Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+            String username = auth.getName();
 
+            // Creating a list of dates to send to front end
+            //  - Necessary because we need to format the dates
+            List<LocalDate> listFilDates = new ArrayList<>();
+
+            // Grabbing Position Dates & Filled Dates
+            // Done Grabbing Dates
+            List<Application> applications = applicationService.getAllApplications();
+
+
+
+            //model.addAttribute("activePositions", listPositions.size());
+            model.addAttribute("listFilDates", listFilDates);
+            model.addAttribute("listPositions", listRecent);
+            model.addAttribute("numCandidates", applications.size());
+            model.addAttribute("username", username);
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy");
+            model.addAttribute("formatter", formatter);
+            return "index";
+        }
+        //else
+        List<Position> listPositions = positionService.getAllPositions();
+        listPositions.removeIf(Position::isArchived);
+        listPositions.removeIf(Position::isTemplate);
+        List<Position> listRecentPositions = positionService.getRecentPositions();
         // Creating a list of dates to send to front end
         //  - Necessary because we need to format the dates
         List<LocalDate> listFilDates = new ArrayList<>();
 
         // Grabbing Position Dates & Filled Dates
-        // Done Grabbing Dates
-        List<Application> applications = applicationService.getAllApplications();
+        for (Position pos : listRecentPositions) {
+            LocalDate tempFill = null;
+            for(Application application: pos.getApplications()) {
+                if(application.getFilled_date() != null)
+                    tempFill = application.getFilled_date();
+            }
+            listFilDates.add(tempFill);
+        } // Done Grabbing Dates
+        List<Application> filledPositionCandidates = applicationService.getAllFilledPositionCandidates();
+        List<Application> candidates = applicationService.getAllApplications();
 
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String username = auth.getName();
 
-
-        //model.addAttribute("activePositions", listPositions.size());
+        model.addAttribute("activePositions", listPositions.size());
         model.addAttribute("listFilDates", listFilDates);
-        model.addAttribute("listPositions", listRecent);
-        model.addAttribute("numCandidates", applications.size());
+        model.addAttribute("listPositions", listRecentPositions);
+        model.addAttribute("filledPositions", filledPositionCandidates.size());
+        model.addAttribute("numCandidates", candidates.size());
         model.addAttribute("username", username);
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy");
         model.addAttribute("formatter", formatter);
-        return "index";
+
+        return "needl-index";
     }
 }

@@ -16,10 +16,12 @@ public class Application {
 
     @ManyToOne
     @JoinColumn(name= "user_id")
+    @JsonIgnore
     private User user;
 
     @ManyToOne
     @JoinColumn(name= "position_id")
+    @JsonIgnore
     private Position position;
     @OneToMany(mappedBy = "application")
     @JsonIgnore

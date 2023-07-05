@@ -25,8 +25,9 @@ public class Role {
 
     public Role() {}
 
-    public Role(int role_id, String role, boolean read, boolean write, boolean execute) {
+    public Role(int role_id, Set<User> users, String role, boolean read, boolean write, boolean execute) {
         this.role_id = role_id;
+        this.users = users;
         this.role = role;
         this.read = read;
         this.write = write;
@@ -39,6 +40,14 @@ public class Role {
 
     public void setRole_id(int role_id) {
         this.role_id = role_id;
+    }
+
+    public Set<User> getUsers() {
+        return users;
+    }
+
+    public void setUsers(Set<User> users) {
+        this.users = users;
     }
 
     public String getRole() {
@@ -73,23 +82,15 @@ public class Role {
         this.execute = execute;
     }
 
-    public Set<User> getUsers() {
-        return users;
-    }
-
-    public void setUsers(Set<User> users) {
-        this.users = users;
-    }
-
     @Override
     public String toString() {
-        return "role{" +
+        return "Role{" +
                 "role_id=" + role_id +
+                ", users=" + users +
                 ", role='" + role + '\'' +
                 ", read=" + read +
                 ", write=" + write +
                 ", execute=" + execute +
                 '}';
     }
-
 }
