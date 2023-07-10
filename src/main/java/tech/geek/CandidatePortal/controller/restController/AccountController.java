@@ -3,6 +3,9 @@ package tech.geek.CandidatePortal.controller.restController;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -13,6 +16,7 @@ import tech.geek.CandidatePortal.services.UserService;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletRequestWrapper;
+import java.util.Collection;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -28,68 +32,76 @@ public class AccountController {
     private HttpServletRequest servletRequest;
 
     @PostMapping("/changeusername")
-    private ResponseEntity<String> changeUser(@RequestParam("username") String newUsername) throws ServletException {
+    private ResponseEntity<Integer> changeUser(@RequestParam("username") String newUsername) throws ServletException {
         if (usernameAlreadyExists(newUsername)){
-            return new ResponseEntity("user_exists", HttpStatus.CREATED);
+            return new ResponseEntity(1, HttpStatus.CREATED);
         }
         User user = userService.currentUser();
         user.setUsername(newUsername);
         user = userService.saveUser(user);
-        servletRequest.logout();
-        return new ResponseEntity("changed", HttpStatus.CREATED);
+
+        //Handles the session context after the username has been changed
+        Collection<SimpleGrantedAuthority> authorities = (Collection<SimpleGrantedAuthority>) SecurityContextHolder.getContext().getAuthentication().getAuthorities();
+        UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword(), authorities);
+        SecurityContextHolder.getContext().setAuthentication(authenticationToken);
+        return new ResponseEntity(0, HttpStatus.CREATED);
     }
 
     @PostMapping("/changepassword")
-    private ResponseEntity<String> changePassword(@RequestParam("originalPassword") String originalPassword,
+    private ResponseEntity<Integer> changePassword(@RequestParam("originalPassword") String originalPassword,
                                   @RequestParam("newPassword") String newPassword,
                                   @RequestParam("confirmPassword") String confirmPassword) throws ServletException {
         User user = userService.currentUser();
         if (!(passwordEncoder.matches(originalPassword,user.getPassword()))){
-            return new ResponseEntity<>("Wrong Password", HttpStatus.CREATED);
+            return new ResponseEntity<>(2, HttpStatus.CREATED);
         }
         if (!(newPassword.equals(confirmPassword))){
-            return new ResponseEntity<>("Passwords Don't Match", HttpStatus.CREATED);
+            return new ResponseEntity<>(3, HttpStatus.CREATED);
         }
         if (!(meetsPasswordCriteria(newPassword))){
-            return new ResponseEntity<>("Doesn't Meet Password Criteria", HttpStatus.CREATED);
+            return new ResponseEntity<>(4, HttpStatus.CREATED);
         }
         user.setPassword(passwordEncoder.encode(newPassword));
         userService.saveUser(user);
-        servletRequest.logout();
-        return new ResponseEntity<>("Changed Password", HttpStatus.CREATED);
+
+        //Handles the session context after the username has been changed
+        Collection<SimpleGrantedAuthority> authorities = (Collection<SimpleGrantedAuthority>) SecurityContextHolder.getContext().getAuthentication().getAuthorities();
+        UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword(), authorities);
+        SecurityContextHolder.getContext().setAuthentication(authenticationToken);
+        return new ResponseEntity<>(0, HttpStatus.CREATED);
     }
 
     @PostMapping("/changefirstname")
-    private ResponseEntity<String> changeFirstName(@RequestParam("firstname") String newFirstName){
+    private ResponseEntity<Integer> changeFirstName(@RequestParam("firstname") String newFirstName){
         System.out.println("---------------------------------");
         System.out.println(newFirstName);
         User user = userService.currentUser();
         user.setFirst_name(newFirstName);
         userService.saveUser(user);
-        return new ResponseEntity<>("Changed First Name", HttpStatus.CREATED);
+        return new ResponseEntity<>(0, HttpStatus.CREATED);
     }
 
     @PostMapping("/changelastname")
-    private ResponseEntity<String> changeLastName(@RequestParam("lastname") String newLastName){
+    private ResponseEntity<Integer> changeLastName(@RequestParam("lastname") String newLastName){
         System.out.println(newLastName);
         User user = userService.currentUser();
         user.setLast_name(newLastName);
         userService.saveUser(user);
-        return new ResponseEntity<>("Changed Last Name", HttpStatus.CREATED);
+        return new ResponseEntity<>(0, HttpStatus.CREATED);
     }
 
     @PostMapping("/changeEmail")
-    private ResponseEntity<String> changeEmail(@RequestParam("newEmail") String newEmail, @RequestParam("confirmEmail") String confirmEmail){
+    private ResponseEntity<Integer> changeEmail(@RequestParam("newEmail") String newEmail, @RequestParam("confirmEmail") String confirmEmail){
         if (!(newEmail.equals(confirmEmail))){
-            return new ResponseEntity<>("Email Not Match", HttpStatus.CREATED);
+            return new ResponseEntity<>(5, HttpStatus.CREATED);
         }
         if (emailAlreadyExists(newEmail)){
-            return new ResponseEntity<>("Email In Use", HttpStatus.CREATED);
+            return new ResponseEntity<>(6, HttpStatus.CREATED);
         }
         User user = userService.currentUser();
         user.setEmail(newEmail);
         userService.saveUser(user);
-        return new ResponseEntity<>("Email Changed", HttpStatus.CREATED);
+        return new ResponseEntity<>(0, HttpStatus.CREATED);
     }
 
     public boolean meetsPasswordCriteria(String password) {

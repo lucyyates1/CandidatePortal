@@ -43,8 +43,8 @@ function post_username(form){
 
         success: function (response, textStatus) {
             console.log(response);
-            console.log("Username successfully changed");
-            window.location.replace("/profile");
+            window.location.replace("/profile?code=" + response);
+
         },
 
         error: function (errMsg) {
@@ -65,8 +65,7 @@ function post_password(form){
 
         success: function (response, textStatus) {
             console.log(response);
-            console.log("Password successfully changed");
-            window.location.replace("/profile");
+            window.location.replace("/profile?code=" + response);
         },
 
         error: function (errMsg) {
@@ -87,8 +86,7 @@ function post_firstname(form){
 
         success: function (response, textStatus) {
             console.log(response);
-            console.log("First Name successfully changed");
-            window.location.replace("/profile");
+             window.location.replace("/profile?code=" + response);
         },
 
         error: function (errMsg) {
@@ -109,8 +107,7 @@ function post_lastname(form){
 
         success: function (response, textStatus) {
             console.log(response);
-            console.log("Last Name successfully changed");
-            window.location.replace("/profile");
+            window.location.replace("/profile?code=" + response);
         },
 
         error: function (errMsg) {
@@ -130,8 +127,7 @@ function post_email(form){
         data: formdata ? formdata : form.serialize(),
 
         success: function (response, textStatus) {
-            console.log("Email successfully changed");
-            window.location.replace("/profile");
+            window.location.replace("/profile?code=" + response);
         },
 
         error: function (errMsg) {

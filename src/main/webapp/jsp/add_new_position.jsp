@@ -17,7 +17,7 @@
         <script src="../js/add_new_position.js"></script>
 
         <script type="text/javascript"></script>
-        <jsp:include page="header.jsp"/>
+        <jsp:include page="needl-header.jsp"/>
     </head>
     <body>
         <h2>Add New Position</h2>

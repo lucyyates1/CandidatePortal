@@ -12,6 +12,7 @@ import tech.geek.CandidatePortal.entity.User;
 import tech.geek.CandidatePortal.services.UserService;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -21,7 +22,41 @@ public class ProfileController {
     UserService userService;
 
     @GetMapping("/profile")
-    private String loadProfile(Model model){
+    private String updateProfile(@RequestParam(value="code") Optional<Integer> code, Model model){
+        String status = "";
+        String style = "good";
+        if (code.isPresent()) {
+            System.out.println(code.get());
+            if (code.get().equals(0)){
+                status = "Successfully Updated Information!";
+            }
+            else if (code.get().equals(1)) {
+                style = "error";
+                status = "Username Already Exists!";
+            }
+            else if (code.get().equals(2)) {
+                style = "error";
+                status = "Password is Incorrect!";
+            }
+            else if (code.get().equals(3)) {
+                style = "error";
+                status = "Password Does Not Match!";
+            }
+            else if (code.get().equals(4)) {
+                style = "error";
+                status = "Password Does Not Meet Criteria!";
+            }
+            else if (code.get().equals(5)) {
+                style = "error";
+                status = "Email Addresses Must Match!";
+            }
+            else if (code.get().equals(6)) {
+                style = "error";
+                status = "Email Address Already Exists!";
+            }
+        }
+        model.addAttribute("style", style);
+        model.addAttribute("status",status);
         model.addAttribute("user",userService.currentUser());
         return "profile";
     }
