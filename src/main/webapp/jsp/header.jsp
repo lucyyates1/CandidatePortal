@@ -37,9 +37,9 @@
         </a>
     </div>
     <div class="buttonsWrapper">
-        <a class="header" href="positions">Positions</a>
-        <a class="header" href="applied">Applied</a>
-        <a class="header" href="profile">Profile</a>
+        <a class="header" href="/positions">Positions</a>
+        <a class="header" href="/applied">Applied</a>
+        <a class="header" href="/profile">Profile</a>
         <form name="logoutForm" action="logout" method="POST">
             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
             <input type="submit" style="padding: 1rem 0rem; margin: 1.5rem; background: indianred; width: 100%" value="Logout"/>

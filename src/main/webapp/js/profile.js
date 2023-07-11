@@ -137,61 +137,67 @@ function post_email(form){
 }
 
 function openUser(){
-    document.getElementById("username-form").style.display = "block";
-    document.getElementById("password-form").style.display = "none";
-    document.getElementById("first-name-form").style.display = "none";
-    document.getElementById("last-name-form").style.display = "none";
-    document.getElementById("email-form").style.display = "none";
+    document.getElementById("username-form").style.maxHeight = "200px";
+    document.getElementById("password-form").style.maxHeight = "0px";
+    document.getElementById("first-name-form").style.maxHeight = "0px";
+    document.getElementById("last-name-form").style.maxHeight = "0px";
+    document.getElementById("password-info").style.display = "none";
+    document.getElementById("email-form").style.maxHeight = "0px";
 }
 
 function closeUser(){
-    document.getElementById("username-form").style.display = "none";
+    document.getElementById("username-form").style.maxHeight = "0px";
 }
 
 function openPassword(){
-    document.getElementById("password-form").style.display = "block";
-    document.getElementById("username-form").style.display = "none";
-    document.getElementById("first-name-form").style.display = "none";
-    document.getElementById("last-name-form").style.display = "none";
-    document.getElementById("email-form").style.display = "none";
+    document.getElementById("password-form").style.maxHeight = "280px";
+    document.getElementById("username-form").style.maxHeight = "0px";
+    document.getElementById("first-name-form").style.maxHeight = "0px";
+    document.getElementById("last-name-form").style.maxHeight = "0px";
+    document.getElementById("email-form").style.maxHeight = "0px";
+    document.getElementById("password-info").style.display = "block";
 }
 
 function closePassword(){
-    document.getElementById("password-form").style.display = "none";
+    document.getElementById("password-form").style.maxHeight = "0px";
+    document.getElementById("password-info").style.display = "none";
 }
 
 function openFirstName(){
-    document.getElementById("first-name-form").style.display = "block";
-    document.getElementById("password-form").style.display = "none";
-    document.getElementById("username-form").style.display = "none";
-    document.getElementById("last-name-form").style.display = "none";
-    document.getElementById("email-form").style.display = "none";
+    document.getElementById("first-name-form").style.maxHeight = "200px";
+    document.getElementById("password-form").style.maxHeight = "0px";
+    document.getElementById("username-form").style.maxHeight = "0px";
+    document.getElementById("last-name-form").style.maxHeight = "0px";
+    document.getElementById("email-form").style.maxHeight = "0px";
+    document.getElementById("password-info").style.display = "none";
 }
 
 function closeFirstName(){
-    document.getElementById("first-name-form").style.display = "none";
+    document.getElementById("first-name-form").style.maxHeight = "0px";
 }
 
 function openLastName(){
-    document.getElementById("last-name-form").style.display = "block";
-    document.getElementById("password-form").style.display = "none";
-    document.getElementById("username-form").style.display = "none";
-    document.getElementById("first-name-form").style.display = "none";
-    document.getElementById("email-form").style.display = "none";
+    document.getElementById("last-name-form").style.maxHeight = "200px";
+    document.getElementById("password-form").style.maxHeight = "0px";
+    document.getElementById("username-form").style.maxHeight = "0px";
+    document.getElementById("first-name-form").style.maxHeight = "0px";
+    document.getElementById("email-form").style.maxHeight = "0px";
+    document.getElementById("password-info").style.display = "none";
 }
 
 function closeLastName(){
-    document.getElementById("last-name-form").style.display = "none";
+    document.getElementById("last-name-form").style.maxHeight = "0px";
 }
 
 function openEmail(){
-    document.getElementById("email-form").style.display = "block";
-    document.getElementById("password-form").style.display = "none";
-    document.getElementById("username-form").style.display = "none";
-    document.getElementById("last-name-form").style.display = "none";
-    document.getElementById("first-name-form").style.display = "none";
+    document.getElementById("email-form").style.maxHeight = "200px";
+    document.getElementById("password-form").style.maxHeight = "0px";
+    document.getElementById("username-form").style.maxHeight = "0px";
+    document.getElementById("last-name-form").style.maxHeight = "0px";
+    document.getElementById("first-name-form").style.maxHeight = "0px";
+    document.getElementById("password-info").style.display = "none";
 }
 
 function closeEmail(){
-    document.getElementById("email-form").style.display = "none";
+    document.getElementById("email-form").style.maxHeight = "0px";
 }

@@ -39,8 +39,8 @@
                     <form method="POST" action="/changepassword" id="change-password">
                         <input class="change-info" name="originalPassword" type="password" placeholder="Enter Current Password" required/>
                         <div class="password">
-                            <input class="formInput" type="password" name="newPassword" placeholder="Enter New Password" spellcheck="false" required/>
-                            <div class="tooltip" style="right: 37%;">
+                            <input class="change-info" type="password" name="newPassword" placeholder="Enter New Password" spellcheck="false" required/>
+                            <div class="tooltip" id="password-info" style="right: 40%;">
                                 <span class="tooltipText">Password must be at least seven (7) characters long, and contain one (1) number, one (1) uppercase letter, one (1) lowercase letter, and one (1) special character.</span>
                                 <div class="infolink" style="font-size: 20px"></div>
                             </div>

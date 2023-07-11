@@ -6,7 +6,7 @@
 .info-container{
     padding-top: 10px;
     padding-bottom: 10px;
-    padding-left: 37%;
+    padding-left: 35%;
 }
 .label{
     font-size: 20px;
@@ -26,18 +26,32 @@ input.change-info{
     flex-direction: row;
     align-items: center;
 }
-#username-form{
+
+#password-info{
     display: none;
+}
+#username-form{
+    overflow: hidden;
+    max-height: 0px;
+    transition: max-height .3s ease-out;
 }
 #password-form{
-    display: none;
+     overflow: hidden;
+     max-height: 0px;
+     transition: max-height .3s ease-out;
 }
 #first-name-form{
-    display: none;
+     overflow: hidden;
+     max-height: 0px;
+     transition: max-height .3s ease-out;
 }
 #last-name-form{
-    display: none;
+     overflow: hidden;
+     max-height: 0px;
+     transition: max-height .3s ease-out;
 }
 #email-form{
-    display: none;
+     overflow: hidden;
+     max-height: 0px;
+     transition: max-height .3s ease-out;
 }
