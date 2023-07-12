@@ -6,20 +6,31 @@
 .info-container{
     padding-top: 10px;
     padding-bottom: 10px;
-    padding-left: 35%;
+    display: grid;
+    grid-template-columns: 150px 300px;
+    align-items: center;
+}
+
+.button-grid{
+    padding-top: 15px;
+    padding-bottom: 15px;
+    display: grid;
+    grid-template-columns: auto auto;
+    column-gap: 50px;
 }
 .label{
     font-size: 20px;
     font-weight: bold;
     text-decoration: underline;
     padding: 10px;
+    text-align: right;
 }
 .info{
     font-size: 20px;
     padding: 10px;
 }
 input.change-info{
-    width: 40%;
+    width: 100%;
 }
 .password {
     display: flex;
@@ -30,28 +41,17 @@ input.change-info{
 #password-info{
     display: none;
 }
-#username-form{
-    overflow: hidden;
-    max-height: 0px;
-    transition: max-height .3s ease-out;
-}
 #password-form{
      overflow: hidden;
      max-height: 0px;
      transition: max-height .3s ease-out;
 }
-#first-name-form{
-     overflow: hidden;
-     max-height: 0px;
-     transition: max-height .3s ease-out;
-}
-#last-name-form{
-     overflow: hidden;
-     max-height: 0px;
-     transition: max-height .3s ease-out;
-}
-#email-form{
-     overflow: hidden;
-     max-height: 0px;
-     transition: max-height .3s ease-out;
+
+.inner-wrap{
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    align-content: center;
+    justify-content: center;
+    align-items: center;
 }

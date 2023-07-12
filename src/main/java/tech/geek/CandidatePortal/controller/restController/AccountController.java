@@ -28,24 +28,6 @@ public class AccountController {
     UserService userService;
     @Autowired
     private PasswordEncoder passwordEncoder;
-    @Autowired
-    private HttpServletRequest servletRequest;
-
-    @PostMapping("/changeusername")
-    private ResponseEntity<Integer> changeUser(@RequestParam("username") String newUsername) throws ServletException {
-        if (usernameAlreadyExists(newUsername)){
-            return new ResponseEntity(1, HttpStatus.CREATED);
-        }
-        User user = userService.currentUser();
-        user.setUsername(newUsername);
-        user = userService.saveUser(user);
-
-        //Handles the session context after the username has been changed
-        Collection<SimpleGrantedAuthority> authorities = (Collection<SimpleGrantedAuthority>) SecurityContextHolder.getContext().getAuthentication().getAuthorities();
-        UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword(), authorities);
-        SecurityContextHolder.getContext().setAuthentication(authenticationToken);
-        return new ResponseEntity(0, HttpStatus.CREATED);
-    }
 
     @PostMapping("/changepassword")
     private ResponseEntity<Integer> changePassword(@RequestParam("originalPassword") String originalPassword,
@@ -53,13 +35,13 @@ public class AccountController {
                                   @RequestParam("confirmPassword") String confirmPassword) throws ServletException {
         User user = userService.currentUser();
         if (!(passwordEncoder.matches(originalPassword,user.getPassword()))){
-            return new ResponseEntity<>(2, HttpStatus.CREATED);
+            return new ResponseEntity<>(1, HttpStatus.CREATED);
         }
         if (!(newPassword.equals(confirmPassword))){
-            return new ResponseEntity<>(3, HttpStatus.CREATED);
+            return new ResponseEntity<>(2, HttpStatus.CREATED);
         }
         if (!(meetsPasswordCriteria(newPassword))){
-            return new ResponseEntity<>(4, HttpStatus.CREATED);
+            return new ResponseEntity<>(3, HttpStatus.CREATED);
         }
         user.setPassword(passwordEncoder.encode(newPassword));
         userService.saveUser(user);
@@ -71,36 +53,34 @@ public class AccountController {
         return new ResponseEntity<>(0, HttpStatus.CREATED);
     }
 
-    @PostMapping("/changefirstname")
-    private ResponseEntity<Integer> changeFirstName(@RequestParam("firstname") String newFirstName){
-        System.out.println("---------------------------------");
-        System.out.println(newFirstName);
+    @PostMapping("/editUser")
+    private ResponseEntity<Integer> editUser(@RequestParam("username") String newUsername,
+                                             @RequestParam("firstname") String newFirstName,
+                                             @RequestParam("lastname") String newLastName,
+                                             @RequestParam("newEmail") String newEmail
+                                             ){
         User user = userService.currentUser();
-        user.setFirst_name(newFirstName);
-        userService.saveUser(user);
-        return new ResponseEntity<>(0, HttpStatus.CREATED);
-    }
-
-    @PostMapping("/changelastname")
-    private ResponseEntity<Integer> changeLastName(@RequestParam("lastname") String newLastName){
-        System.out.println(newLastName);
-        User user = userService.currentUser();
-        user.setLast_name(newLastName);
-        userService.saveUser(user);
-        return new ResponseEntity<>(0, HttpStatus.CREATED);
-    }
-
-    @PostMapping("/changeEmail")
-    private ResponseEntity<Integer> changeEmail(@RequestParam("newEmail") String newEmail, @RequestParam("confirmEmail") String confirmEmail){
-        if (!(newEmail.equals(confirmEmail))){
+        //If the username is not unique and not the same username, returns a code 4
+        if (usernameAlreadyExists(newUsername) && !(user.getUsername().equals(newUsername))){
+            return new ResponseEntity(4, HttpStatus.CREATED);
+        }
+        if (!(meetsEmailCriteria(newEmail))){
             return new ResponseEntity<>(5, HttpStatus.CREATED);
         }
-        if (emailAlreadyExists(newEmail)){
+        //If the new email is not unique and not the same email, returns a code 5
+        if (emailAlreadyExists(newEmail) && !(user.getEmail().equals(newEmail))){
             return new ResponseEntity<>(6, HttpStatus.CREATED);
         }
-        User user = userService.currentUser();
+        user.setUsername(newUsername);
+        user.setFirst_name(newFirstName);
+        user.setLast_name(newLastName);
         user.setEmail(newEmail);
-        userService.saveUser(user);
+        user = userService.saveUser(user);
+
+        //Handles the session context after the username has been changed
+        Collection<SimpleGrantedAuthority> authorities = (Collection<SimpleGrantedAuthority>) SecurityContextHolder.getContext().getAuthentication().getAuthorities();
+        UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword(), authorities);
+        SecurityContextHolder.getContext().setAuthentication(authenticationToken);
         return new ResponseEntity<>(0, HttpStatus.CREATED);
     }
 
