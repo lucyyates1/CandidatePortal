@@ -9,16 +9,16 @@ $(document).ready(function(){
             xhr.setRequestHeader(header, token);
         });
     });
-    $("#change-password").submit(function (event) {
+    $("#edit-user").submit(function (event) {
         event.preventDefault();
-        post_password($(this));
+        post_user($(this));
     });
-    $('#edit-user').on('click', function(){
+    $('#return-click').on('click', function(){
         $.ajax({
             type: "GET",
-            url: '/profile/edit',
+            url: '/profile',
             success: function (position) {
-                window.location = "profile/edit";
+                window.location = "/profile";
             },
 
             failure: function (errMsg) {
@@ -28,35 +28,23 @@ $(document).ready(function(){
     });
 });
 
-function post_password(form){
+function post_user(form){
     var actionUrl = form.attr('action');
     var formdata = new FormData(form[0]);
-    document.getElementById("password-form").style.maxHeight = "0px";
-    document.getElementById("password-info").style.display = "none";
     $.ajax({
         type: "POST",
-        url: '/changepassword',
+        url: '/editUser',
         processData: false,
         contentType: false,
         data: formdata ? formdata : form.serialize(),
 
         success: function (response, textStatus) {
             console.log(response);
-            window.location.replace("/profile?code=" + response);
+            window.location.replace("/profile/edit?code=" + response);
         },
 
         error: function (errMsg) {
             console.log(errMsg.toString())
         }
     });
-}
-
-function openPassword(){
-    document.getElementById("password-form").style.maxHeight = "280px";
-    document.getElementById("password-info").style.display = "block";
-}
-
-function closePassword(){
-    document.getElementById("password-form").style.maxHeight = "0px";
-    document.getElementById("password-info").style.display = "none";
 }
