@@ -31,6 +31,8 @@ $(document).ready(function(){
 function post_password(form){
     var actionUrl = form.attr('action');
     var formdata = new FormData(form[0]);
+    document.getElementById("password-form").style.maxHeight = "0px";
+    document.getElementById("password-info").style.display = "none";
     $.ajax({
         type: "POST",
         url: '/changepassword',

@@ -72,6 +72,7 @@ public class ApplyController {
         m.addAttribute("virtual", StringUtils.substringBetween(selectedPosition.getDescription(),"Virtual: ","\n"));
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy");
         m.addAttribute("formatter",formatter);
+        m.addAttribute("user", userService.currentUser());
         return "apply-position";
     }
 

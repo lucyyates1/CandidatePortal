@@ -26,12 +26,18 @@
     text-align: right;
 }
 .info{
-    font-size: 20px;
+    font-size: 1.3rem;
     padding: 10px;
 }
 input.change-info{
     width: 100%;
+    margin: 0px 0px 0px 10px;
 }
+input.change-info-password{
+    width: 100%;
+    margin: 20px 0;
+}
+
 .password {
     display: flex;
     flex-direction: row;
@@ -45,6 +51,7 @@ input.change-info{
      overflow: hidden;
      max-height: 0px;
      transition: max-height .3s ease-out;
+     width: 300px;
 }
 
 .inner-wrap{
@@ -54,4 +61,8 @@ input.change-info{
     align-content: center;
     justify-content: center;
     align-items: center;
+}
+
+#response{
+    min-height: 18px;
 }

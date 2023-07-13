@@ -117,11 +117,11 @@
                         </select>
                         <label for="candidate-first-name" class="input_label">First Name (*):</label>
                         <div>
-                            <input name="first-name" type="text" id="candidate-first-name" required/>
+                            <input name="first-name" type="text" id="candidate-first-name" value=${user.first_name} required/>
                         </div>
                         <label for="candidate-last-name" class="input_label">Last Name (*):</label>
                         <div>
-                            <input name="last-name" type="text" id="candidate-last-name" required/>
+                            <input name="last-name" type="text" id="candidate-last-name" value=${user.last_name} required/>
                         </div>
                         <!-- FILE UPLOADS FOR RESUME -->
                         <label for="resume-upload" class="input_label">Resume (*):</label>

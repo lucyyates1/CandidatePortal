@@ -20,7 +20,7 @@
         <div class="wrapper">
             <div class="inner-wrap">
                 <h2 class="apply-header">Profile Info</h2>
-                <p class="good" style="text-align: center;">${status}</p>
+                <p class="${style}" id="response" style="text-align: center;">${status}</p>
                 <div class="info-container">
                     <span class="label">Username:</span>
                     <span class="info">${user.username}</span>
@@ -42,17 +42,20 @@
                  <button onclick="openPassword()">Change Password</button>
                  <div id="password-form">
                      <form method="POST" action="/changepassword" id="change-password">
-                         <input class="change-info" name="originalPassword" type="password" placeholder="Enter Current Password" required/>
+
+                         <input class="change-info-password" name="originalPassword" type="password" placeholder="Enter Current Password" required/>
                          <div class="password">
-                             <input class="change-info" type="password" name="newPassword" placeholder="Enter New Password" spellcheck="false" required/>
+                             <input class="change-info-password" type="password" name="newPassword" placeholder="Enter New Password" spellcheck="false" required/>
                              <div class="tooltip" id="password-info" style="right: 40%;">
                                  <span class="tooltipText">Password must be at least seven (7) characters long, and contain one (1) number, one (1) uppercase letter, one (1) lowercase letter, and one (1) special character.</span>
                                  <div class="infolink" style="font-size: 20px"></div>
                              </div>
                          </div>
-                         <input class="change-info" name="confirmPassword" type="password" placeholder="Confirm New Password" required/>
-                         <button type="submit">Confirm</button>
-                         <button type="button" onclick="closePassword()">Cancel</button>
+                         <input class="change-info-password" name="confirmPassword" type="password" placeholder="Confirm New Password" required/>
+                         <div class="button-grid">
+                            <button type="submit">Confirm</button>
+                            <button type="button" onclick="closePassword()">Cancel</button>
+                         </div>
                      </form>
                  </div>
             </div>

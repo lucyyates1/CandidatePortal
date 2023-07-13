@@ -5,7 +5,7 @@
     <head>
         <meta name="_csrf" content="${_csrf.token}"/>
         <meta name="_csrf_header" content="${_csrf.headerName}"/>
-        <title>User Profile</title>
+        <title>Edit User Profile</title>
         <jsp:include page="header.jsp"/>
         <link rel="stylesheet" href="../css/globalStyleSheet.css">
         <link rel="stylesheet" href="../css/profile.css">
@@ -20,15 +20,21 @@
         <div class="wrapper">
             <div class="inner-wrap">
                 <h2 class="apply-header">Profile Info</h2>
-                <p class="error" style="text-align: center;">${status}</p>
+                <p class="${style}" id="response" style="text-align: center;">${status}</p>
                 <form method="POST" action="/editUser" id="edit-user">
                     <div class="info-container">
                         <span class="label">Username:</span>
                         <input class="change-info" name="username" type="text" value="${user.username}" required/>
+                    </div>
+                    <div class="info-container">
                         <span class="label">First Name:</span>
                         <input class="change-info" name="firstname" type="text" value="${user.first_name}" required/>
+                    </div>
+                    <div class="info-container">
                         <span class="label">Last Name:</span>
                         <input class="change-info" name="lastname" type="text" value="${user.last_name}" required/>
+                    </div>
+                    <div class="info-container">
                         <span class="label">Email:</span>
                         <input class="change-info" name="newEmail" type="text" value="${user.email}" required/>
                     </div>

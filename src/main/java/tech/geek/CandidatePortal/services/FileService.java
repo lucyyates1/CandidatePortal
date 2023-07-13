@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mock.web.MockFilterConfig;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+import tech.geek.CandidatePortal.entity.User;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.File;
@@ -16,12 +17,12 @@ public class FileService {
     private HttpServletRequest request;
 
     //THIS WILL MOST LIKELY BE CHANGED TO A POST REQUEST
-    public String saveResume(MultipartFile file) throws Exception{
+    public String saveResume(MultipartFile file, User user) throws Exception{
         String filePath = "null";
         if (!file.isEmpty()) {
             try {
                 //Folder to store resumes
-                String uploadsDir = "/POC Resumes/";
+                String uploadsDir = "/POC Resumes/" + user.getUser_id() + "/";
 
                 //Creates the upload path
                 String uploadPath = request.getServletContext().getRealPath(uploadsDir);

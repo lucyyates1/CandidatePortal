@@ -50,7 +50,7 @@ public class ApplicationController {
         newApplication.setInitial_contact_date(LocalDate.now());
 
         //Saves the file to the Resume folder, and returns the file path
-        newApplication.setResume_path(fileService.saveResume(resume));
+        newApplication.setResume_path(fileService.saveResume(resume, userService.currentUser()));
         if (coverLetter != null){
             //Set the cover letter path to the cover letter (NOT IMPLEMENTED YET)
         }
