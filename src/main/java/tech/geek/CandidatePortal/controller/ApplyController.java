@@ -14,10 +14,13 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import tech.geek.CandidatePortal.entity.*;
 import tech.geek.CandidatePortal.services.*;
 
+import java.io.IOException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 public class ApplyController {
@@ -43,6 +46,8 @@ public class ApplyController {
         Position selectedPosition = positionService.getPositionById(id);
         List<Skill> skillList = new ArrayList<>();
         List<Certification> certificationList = new ArrayList<>();
+        Map<String, String> savedResumes = new HashMap<>();
+        List<String> fileNames = new ArrayList<>();
         for (Application application : user.getApplications()
              ) {
             if (application.getPosition().getPosition_id() == id){
@@ -72,7 +77,19 @@ public class ApplyController {
         m.addAttribute("virtual", StringUtils.substringBetween(selectedPosition.getDescription(),"Virtual: ","\n"));
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy");
         m.addAttribute("formatter",formatter);
-        m.addAttribute("user", userService.currentUser());
+        m.addAttribute("user", user);
+        try {
+            savedResumes = fileService.pullUserResumes(user);
+            for (String key:
+                    savedResumes.keySet()) {
+                System.out.println(key);
+                System.out.println(savedResumes.get(key));
+                fileNames.add(key);
+            }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        m.addAttribute("fileNames", fileNames);
         return "apply-position";
     }
 
