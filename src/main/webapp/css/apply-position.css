@@ -169,14 +169,14 @@ p.bubble{
     position:fixed;
     background-color: white;
     border-radius: 20px;
-    height: 250px;
-    width: 400px;
+    height: 180px;
+    width: 340px;
     top: 50%;
     left: 50%;
-    margin-top: -125px;
-    margin-left: -200px;
+    margin-top: -90px;
+    margin-left: -170px;
     z-index: 101;
-    padding: 20px;
+    padding-left: 10px;
 }
 
 #grey-out{
@@ -189,4 +189,12 @@ p.bubble{
     background-color: black;
     opacity: 0.5;
     z-index: 100;
+}
+
+#pop-up-div{
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: column;
+    align-content: center;
+    padding: 10px;
 }

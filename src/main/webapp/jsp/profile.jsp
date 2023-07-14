@@ -18,6 +18,20 @@
     </head>
     <body>
         <div class="wrapper">
+            <div id="grey-out">
+            </div>
+            <div id="pop-up-form">
+                <div>
+                    <button type="button" style="background: #f97b7b;" onclick="closeResume()">X</button>
+                    <h3 style="display: inline; padding-left: 35px; text-decoration: underline;">Add Resume</h3>
+                </div>
+                <form method="POST" action="/addResume" id="upload-resume"  enctype="multipart/form-data">
+                    <div id="pop-up-div">
+                        <input type="file" name="resume" accept=".doc,.docx,.pdf" required/>
+                        <button type"submit" style="width: 150px; font-size: 16px;">Save Resume</button>
+                    </div>
+                </form>
+            </div>
             <div class="inner-wrap">
                 <h2 class="apply-header">Profile Info</h2>
                 <p class="${style}" id="response" style="text-align: center;">${status}</p>
@@ -38,7 +52,7 @@
                     <span class="info">${user.email}</span>
                 </div>
                  <button id="edit-user">Change User Credentials</button>
-                 <br>
+                 <button onclick="openResume()">Add Resume</button>
                  <button onclick="openPassword()">Change Password</button>
                  <div id="password-form">
                      <form method="POST" action="/changepassword" id="change-password">

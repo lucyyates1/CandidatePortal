@@ -78,13 +78,16 @@ public class ApplyController {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy");
         m.addAttribute("formatter",formatter);
         m.addAttribute("user", user);
+
         try {
             savedResumes = fileService.pullUserResumes(user);
-            for (String key:
-                    savedResumes.keySet()) {
-                System.out.println(key);
-                System.out.println(savedResumes.get(key));
-                fileNames.add(key);
+            if (savedResumes != null) {
+                for (String key :
+                        savedResumes.keySet()) {
+                    System.out.println(key);
+                    System.out.println(savedResumes.get(key));
+                    fileNames.add(key);
+                }
             }
         } catch (IOException e) {
             throw new RuntimeException(e);

@@ -19,10 +19,15 @@
         <div id="grey-out">
         </div>
         <div id="pop-up-form">
+            <div>
+                <button type="button" style="background: #f97b7b;" onclick="closeResume()">X</button>
+                <h3 style="display: inline; padding-left: 35px; text-decoration: underline;">Add Resume</h3>
+            </div>
             <form method="POST" action="/addResume" id="upload-resume"  enctype="multipart/form-data">
-                <input type="file" name="resume" accept=".doc,.docx,.pdf" required/>
-                <button type"submit">Save Resume</button>
-                <button type="button" onclick="closeResume()">Close Window</button>
+                <div id="pop-up-div">
+                    <input type="file" name="resume" accept=".doc,.docx,.pdf" required/>
+                    <button type"submit" style="width: 150px; font-size: 16px;">Save Resume</button>
+                </div>
             </form>
         </div>
         <div class="wrapper">
@@ -139,13 +144,13 @@
                                     <input id="resume-upload" type="file" name="resume-upload" accept=".doc,.docx,.pdf" required/>
                                 </c:if>
                                 <c:if test="${fileNames.size() > 0}">
-                                    <select name="resume" id="resume-upload">
+                                    <select name="resume" id="resume-upload" required>
                                         <c:forEach var="resume" items="${fileNames}">
                                             <option value="${resume}">${resume}</option>
                                         </c:forEach>
                                     </select>
+                                    <button type="button" onclick="openResume()">Upload New Resume</button>
                                 </c:if>
-                                <button type="button" onclick="openResume()">Upload New Resume</button>
                             </div>
                             <!-- FILE UPLOADS FOR COVER LETTER -->
                             <!-- Need to Add a Cover Letter Path to the candidate table -->
