@@ -20,7 +20,40 @@ $(document).ready(function(){
         positionID = urlParams.get('id')   // retrieves the url param id of the position
         post_resume($(this), positionID);
     });
+    //Handles Collapsable content
+    $('.collapsible').on('click', function(){
+        this.classList.toggle('active');
+        var content = this.nextElementSibling;
+        var other = document.getElementById("other_info_container")
+        if (content.style.maxHeight){
+            content.style.maxHeight = null;
+            other.style.opacity = 1;
+        } else {
+            content.style.maxHeight = 330 + "px";
+            other.style.opacity = 0;
+        }
+    });
+
+    $(".loadingContainer").hide();
+    // Disabling the page while an AJAX request is made
+    $(document).ajaxStart(function () {
+        $("*").css('pointer-events','none');
+        $("*").css('overflow','hidden');
+        $("body").css('background-color','var(--grey-light)');
+        $("body").css('opacity','0.5');
+        $(".loadingContainer").show();
+    });
+    // Enabling the page once the AJAX request returns
+    $(document).ajaxStop(function () {
+        $("*").css('pointer-events','');
+        $("*").css('overflow','');
+        $("body").css('background-color','');
+        $("body").css('opacity','');
+        $(".loadingContainer").hide();
+    });
 });
+
+
 
 function post_resume(form, positionID){
     var actionUrl = form.attr('action');

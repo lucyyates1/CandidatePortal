@@ -17,10 +17,7 @@ import tech.geek.CandidatePortal.services.*;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Controller
 public class ApplyController {
@@ -48,6 +45,7 @@ public class ApplyController {
         List<Certification> certificationList = new ArrayList<>();
         Map<String, String> savedResumes = new HashMap<>();
         List<String> fileNames = new ArrayList<>();
+        LocalDate currentDate = LocalDate.now();
         for (Application application : user.getApplications()
              ) {
             if (application.getPosition().getPosition_id() == id){
@@ -93,6 +91,9 @@ public class ApplyController {
             throw new RuntimeException(e);
         }
         m.addAttribute("fileNames", fileNames);
+        m.addAttribute("firstDay",currentDate.getDayOfMonth() - (currentDate.getDayOfWeek().getValue()));
+        m.addAttribute("currentDay",currentDate.getDayOfMonth());
+        m.addAttribute("lastDay", currentDate.getDayOfMonth() + 7 + (6-currentDate.getDayOfWeek().getValue()));
         return "apply-position";
     }
 
