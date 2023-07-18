@@ -45,6 +45,10 @@ public class ProfileController {
                 style = "error";
                 status = "Password Does Not Meet Criteria!";
             }
+            else if (code.get().equals(7)){
+                style = "good";
+                status = "Successfully Added Resume!";
+            }
         }
         model.addAttribute("style", style);
         model.addAttribute("status",status);

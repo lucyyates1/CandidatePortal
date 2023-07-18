@@ -13,6 +13,8 @@ import tech.geek.CandidatePortal.entity.User;
 import tech.geek.CandidatePortal.services.*;
 
 import java.time.LocalDate;
+import java.util.Map;
+import java.util.Optional;
 
 @RestController
 public class ApplicationController {
@@ -31,7 +33,8 @@ public class ApplicationController {
     //Function for Candidates applying through the candidate portal
     @PostMapping("/applyposition")
     public ResponseEntity<String> confirmPosition(@RequestParam("position-id") Long positionId,
-                                                  @RequestParam("resume") MultipartFile resume,
+                                                  @RequestParam("resume-upload") Optional<MultipartFile> resumeFile,
+                                                  @RequestParam("resume") Optional<String> resume,
                                                   @RequestParam("cover-letter") MultipartFile coverLetter,
                                                   @RequestParam("first-name") String firstName,
                                                   @RequestParam("last-name") String lastName,
@@ -40,6 +43,7 @@ public class ApplicationController {
         //Declaring Variables
         Application newApplication = new Application();
         User account = userService.currentUser();
+        Map<String, String> resumePaths = fileService.pullUserResumes(account);
         Position position = positionService.getPositionById(positionId);
         newApplication.setFirst_name(firstName);
         newApplication.setLast_name(lastName);
@@ -49,8 +53,16 @@ public class ApplicationController {
         newApplication.setPosition(position);
         newApplication.setInitial_contact_date(LocalDate.now());
 
-        //Saves the file to the Resume folder, and returns the file path
-        newApplication.setResume_path(fileService.saveResume(resume, userService.currentUser()));
+        //If the user is using a previously uploaded resume
+        if (resume.isPresent()){
+            newApplication.setResume_path(resumePaths.get(resume.get()));
+        }
+
+        //If the user is uploading a resume for the first time.
+        else if (resumeFile.isPresent()){
+            //Saves the file to the Resume folder, and returns the file path
+            newApplication.setResume_path(fileService.saveResume(resumeFile.get(), userService.currentUser()));
+        }
         if (coverLetter != null){
             //Set the cover letter path to the cover letter (NOT IMPLEMENTED YET)
         }

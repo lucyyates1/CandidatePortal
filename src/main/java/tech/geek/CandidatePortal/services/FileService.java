@@ -9,6 +9,11 @@ import tech.geek.CandidatePortal.entity.User;
 import javax.servlet.http.HttpServletRequest;
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @Service
 public class FileService {
@@ -54,5 +59,18 @@ public class FileService {
     public String saveCoverLetter(MultipartFile file){
         //NEED TO IMPLEMENT COVER LETTERS TO THE CANDIDATE TABLE
         return "filepath";
+    }
+
+    public Map<String, String> pullUserResumes(User user) throws IOException {
+        String filepath = "C:/Users/PatricNurczyk/Documents/GitHub/CandidatePortal/src/main/webapp/POC Resumes/" + user.getUser_id() + "/";
+        Map<String, String> filePaths = new HashMap<>();
+        File folder = new File(filepath);
+        File [] files = folder.listFiles();
+        if (files == null)
+            return null;
+        for (File file: files) {
+            filePaths.put(file.getName(),file.getPath());
+        }
+        return filePaths;
     }
 }

@@ -2,6 +2,8 @@ $(document).ready(function(){
     // Adding CSRF token to AJAX header
     var token = $("meta[name='_csrf']").attr("content");
     var header = $("meta[name='_csrf_header']").attr("content");
+    const queryString = window.location.search
+    const urlParams = new URLSearchParams(queryString)
     $(function () {
         var token = $("input[name='_csrf']").val();
         var header = "X-CSRF-TOKEN";
@@ -13,8 +15,34 @@ $(document).ready(function(){
         event.preventDefault();
         post_application($(this));
     });
+    $('#upload-resume').submit(function (event) {
+        event.preventDefault();
+        positionID = urlParams.get('id')   // retrieves the url param id of the position
+        post_resume($(this), positionID);
+    });
 });
 
+function post_resume(form, positionID){
+    var actionUrl = form.attr('action');
+    var formdata = new FormData(form[0]);
+
+    $.ajax({
+        type: "POST",
+        url: '/addResume',
+        processData: false,
+        contentType: false,
+        data: formdata,
+
+        success: function (response, textStatus) {
+            console.log(response);
+            window.location.replace("/applyposition?id=" + positionID);
+        },
+
+        error: function (errMsg) {
+            console.log(errMsg.toString())
+        }
+    });
+}
 function post_application(form){
     var actionUrl = form.attr('action');
     var formdata = new FormData(form[0]);
@@ -60,4 +88,14 @@ function serializeFormData(form){
     };
 
     return tempCandidate;
+}
+
+function openResume(){
+    document.getElementById("grey-out").style.display = "block";
+    document.getElementById("pop-up-form").style.display = "block";
+}
+
+function closeResume(){
+    document.getElementById("grey-out").style.display = "none";
+    document.getElementById("pop-up-form").style.display = "none";
 }
