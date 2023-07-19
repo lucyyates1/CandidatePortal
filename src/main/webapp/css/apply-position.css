@@ -217,19 +217,20 @@ p.bubble{
   color: #666;
   text-align: center;
   list-style-type: none;
+  font-size: 20px;
 }
 
 .days li {
   list-style-type: none;
   display: inline-block;
   text-align: center;
-  font-size:12px;
+  font-size: 18px;
   color: black;
   padding: 8px;
 }
 
 .currentDay{
-    background: var(--geek-purple-light);
+    background: var(--geek-purple);
     border: 2px solid grey;
 }
 
@@ -238,5 +239,16 @@ p.bubble{
 }
 
 .days li.day-option{
-    border: 2px solid black;
+    cursor: pointer;
+    transition: background-color 0.2s ease-in;
+}
+
+.days li.day-option:hover{
+    background-color: var(--geek-purple-light);
+}
+
+.timeCollapse{
+    width: 200px;
+    overflow: auto;
+    max-height: 0px;
 }

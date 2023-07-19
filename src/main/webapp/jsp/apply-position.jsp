@@ -157,7 +157,7 @@
                             <input id="cover-letter-upload" type="file" name="cover-letter" accept=".doc,.docx,.pdf" />
                             <label for="candidate-notes" class="input_label">Comments:</label>
                             <textarea name="notes" type="text" id="candidate-notes" style="height: 200px; width: 70%;"></textarea>
-                            <label for="calender" class="input_label">Availability:</label>
+                            <label for="calender" class="input_label">Availability For Interview:</label>
                             <div id="calender">
                                 <ul class="weekdays">
                                     <li>Su</li>
@@ -170,20 +170,51 @@
 
                                 </ul>
                                 <ul class="days">
-                                <c:forEach var="day" begin="${firstDay}" end="${currentDay - 1}">
-                                    <li class="non-select">${day}</li>
+                                <c:forEach var="day" items="${daysBefore}">
+                                    <li class="non-select">${day.getDayOfMonth()}</li>
                                 </c:forEach>
-                                <li class="currentDay">${currentDay}</li>
-                                <c:forEach var="day" begin="${currentDay + 1}" end="${currentDay + 7}">
-                                    <li class="day-option">${day}</li>
+                                <li class="currentDay">${currentDay.getDayOfMonth()}</li>
+                                <c:forEach var="day" items="${daysAfter}">
+                                    <c:if test="${day.getDayOfWeek().getValue() < 6}">
+                                        <li id="${day.getDayOfMonth()}" class="day-option">${day.getDayOfMonth()}</li>
+                                    </c:if>
+                                    <c:if test="${day.getDayOfWeek().getValue() >= 6}">
+                                        <li class="non-select">${day.getDayOfMonth()}</li>
+                                    </c:if>
                                 </c:forEach>
-                                <c:forEach var="day" begin="${currentDay + 8}" end="${lastDay}">
-                                    <li class="non-select">${day}</li>
-                                </c:forEach>
+                                <div id="2023-07-20" class="timeCollapse">
+                                    <input type="checkbox" id="10:00" name="10:00" value="available">
+                                    <label for="10:00">10:00 AM</label><br>
+                                    <input type="checkbox" id="12:30" name="12:30" value="available">
+                                    <label for="10:30">10:30 AM</label><br>
+                                    <input type="checkbox" id="11:00" name="11:00" value="available">
+                                    <label for="11:00">11:00 AM</label><br>
+                                    <input type="checkbox" id="11:30" name="11:30" value="available">
+                                    <label for="11:30">11:30 AM</label><br>
+                                    <input type="checkbox" id="12:00" name="12:00" value="available">
+                                    <label for="12:00">12:00 PM</label><br>
+                                    <input type="checkbox" id="12:30" name="12:30" value="available">
+                                    <label for="12:30">12:30 PM</label><br>
+                                    <input type="checkbox" id="1:00" name="1:00" value="available">
+                                    <label for="1:00">1:00 PM</label><br>
+                                    <input type="checkbox" id="1:30" name="1:30" value="available">
+                                    <label for="1:30">1:30 PM</label><br>
+                                    <input type="checkbox" id="2:00" name="2:00" value="available">
+                                    <label for="2:00">2:00 PM</label><br>
+                                    <input type="checkbox" id="2:30" name="2:30" value="available">
+                                    <label for="2:30">2:30 PM</label><br>
+                                    <input type="checkbox" id="3:00" name="3:00" value="available">
+                                    <label for="3:00">3:00 PM</label><br>
+                                    <input type="checkbox" id="3:30" name="3:30" value="available">
+                                    <label for="3:30">3:30 PM</label><br>
+                                    <input type="checkbox" id="4:00" name="4:00" value="available">
+                                    <label for="4:00">4:00 PM</label><br>
+                                    <input type="checkbox" id="4:30" name="4:30" value="available">
+                                    <label for="4:30">4:30 PM</label><br>
+                                </div>
                             </div>
                             <p></p>
                             <button style="margin: 50px; width: 40%" type="submit" id="button_apply">Submit</button>
-                            <!--Change to JS-->
                         </div>
                     </form:form>
                 </div>
@@ -193,4 +224,17 @@
     <footer>
         <jsp:include page="footer.jsp"/>
     </footer>
+    <script>
+        <c:forEach var="day" items="${daysAfter}">
+            $("#${day.getDayOfMonth()}").on('click', function(){
+                    this.classList.toggle('active');
+                    var content = document.getElementById("${day}");
+                    if (content.style.maxHeight){
+                        content.style.maxHeight = null;
+                    } else {
+                        content.style.maxHeight = 330 + "px";
+                    }
+            });
+        </c:forEach>
+    </script>
 </html>

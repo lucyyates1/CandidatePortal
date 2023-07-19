@@ -16,6 +16,7 @@ import tech.geek.CandidatePortal.services.*;
 
 import java.io.IOException;
 import java.time.LocalDate;
+import java.time.Month;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 
@@ -46,6 +47,18 @@ public class ApplyController {
         Map<String, String> savedResumes = new HashMap<>();
         List<String> fileNames = new ArrayList<>();
         LocalDate currentDate = LocalDate.now();
+        LocalDate firstDate = currentDate.minusDays(currentDate.getDayOfWeek().getValue());
+        LocalDate lastDate = currentDate.plusDays((7 + (6-currentDate.getDayOfWeek().getValue())));
+        List<LocalDate> daysBefore = new ArrayList<>();
+        List<LocalDate> daysAfter = new ArrayList<>();
+        while (!(firstDate.equals(currentDate))){
+            daysBefore.add(firstDate);
+            firstDate = firstDate.plusDays(1);
+        }
+        while (!(firstDate.equals(lastDate))){
+            firstDate = firstDate.plusDays(1);
+            daysAfter.add(firstDate);
+        }
         for (Application application : user.getApplications()
              ) {
             if (application.getPosition().getPosition_id() == id){
@@ -91,9 +104,10 @@ public class ApplyController {
             throw new RuntimeException(e);
         }
         m.addAttribute("fileNames", fileNames);
-        m.addAttribute("firstDay",currentDate.getDayOfMonth() - (currentDate.getDayOfWeek().getValue()));
-        m.addAttribute("currentDay",currentDate.getDayOfMonth());
-        m.addAttribute("lastDay", currentDate.getDayOfMonth() + 7 + (6-currentDate.getDayOfWeek().getValue()));
+        m.addAttribute("daysBefore", daysBefore);
+        m.addAttribute("currentDay",currentDate);
+        m.addAttribute("daysAfter",daysAfter);
+        System.out.println(currentDate);
         return "apply-position";
     }
 
