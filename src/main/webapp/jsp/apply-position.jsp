@@ -173,7 +173,7 @@
                                 <c:forEach var="day" items="${daysBefore}">
                                     <li class="non-select">${day.getDayOfMonth()}</li>
                                 </c:forEach>
-                                <li class="currentDay">${currentDay.getDayOfMonth()}</li>
+                                <li class="non-select">${currentDay.getDayOfMonth()}</li>
                                 <c:forEach var="day" items="${daysAfter}">
                                     <c:if test="${day.getDayOfWeek().getValue() < 6}">
                                         <li id="${day.getDayOfMonth()}" class="day-option">${day.getDayOfMonth()}</li>
@@ -182,38 +182,46 @@
                                         <li class="non-select">${day.getDayOfMonth()}</li>
                                     </c:if>
                                 </c:forEach>
-                                <div id="2023-07-20" class="timeCollapse">
-                                    <input type="checkbox" id="10:00" name="10:00" value="available">
-                                    <label for="10:00">10:00 AM</label><br>
-                                    <input type="checkbox" id="12:30" name="12:30" value="available">
-                                    <label for="10:30">10:30 AM</label><br>
-                                    <input type="checkbox" id="11:00" name="11:00" value="available">
-                                    <label for="11:00">11:00 AM</label><br>
-                                    <input type="checkbox" id="11:30" name="11:30" value="available">
-                                    <label for="11:30">11:30 AM</label><br>
-                                    <input type="checkbox" id="12:00" name="12:00" value="available">
-                                    <label for="12:00">12:00 PM</label><br>
-                                    <input type="checkbox" id="12:30" name="12:30" value="available">
-                                    <label for="12:30">12:30 PM</label><br>
-                                    <input type="checkbox" id="1:00" name="1:00" value="available">
-                                    <label for="1:00">1:00 PM</label><br>
-                                    <input type="checkbox" id="1:30" name="1:30" value="available">
-                                    <label for="1:30">1:30 PM</label><br>
-                                    <input type="checkbox" id="2:00" name="2:00" value="available">
-                                    <label for="2:00">2:00 PM</label><br>
-                                    <input type="checkbox" id="2:30" name="2:30" value="available">
-                                    <label for="2:30">2:30 PM</label><br>
-                                    <input type="checkbox" id="3:00" name="3:00" value="available">
-                                    <label for="3:00">3:00 PM</label><br>
-                                    <input type="checkbox" id="3:30" name="3:30" value="available">
-                                    <label for="3:30">3:30 PM</label><br>
-                                    <input type="checkbox" id="4:00" name="4:00" value="available">
-                                    <label for="4:00">4:00 PM</label><br>
-                                    <input type="checkbox" id="4:30" name="4:30" value="available">
-                                    <label for="4:30">4:30 PM</label><br>
-                                </div>
                             </div>
-                            <p></p>
+                        </div>
+                        <div style="margin-left: 30%;">
+                            <c:forEach var="day" items="${daysAfter}">
+                                <c:if test="${day.getDayOfWeek().getValue() < 6}">
+                                    <div id="${day}" class="timeCollapse">
+                                        <input type="checkbox" id="${day} 10:00" name="${day}" value="10:00">
+                                        <label for="${day} 10:00">10:00 AM</label>
+                                        <input type="checkbox" id="${day} 10:30" name="${day}" value="10:30">
+                                        <label for="${day} 10:30">10:30 AM</label>
+                                        <input type="checkbox" id="${day} 11:00" name="${day}" value="11:00">
+                                        <label for="${day} 11:00">11:00 AM</label>
+                                        <input type="checkbox" id="${day} 11:30" name="${day}" value="11:30">
+                                        <label for="${day} 11:30">11:30 AM</label>
+                                        <input type="checkbox" id="${day} 12:00" name="${day}" value="12:00">
+                                        <label for="${day} 12:00">12:00 PM</label>
+                                        <input type="checkbox" id="${day} 12:30" name="${day}" value="12:30">
+                                        <label for="${day} 12:30">12:30 PM</label>
+                                        <input type="checkbox" id="${day} 1:00" name="${day}" value="1:00">
+                                        <label for="${day} 1:00">1:00 PM</label>
+                                        <input type="checkbox" id="${day} 1:30" name="${day}" value="1:30">
+                                        <label for="${day} 1:30">1:30 PM</label>
+                                        <input type="checkbox" id="${day} 2:00" name="${day}" value="2:00">
+                                        <label for="${day} 2:00">2:00 PM</label>
+                                        <input type="checkbox" id="${day} 2:30" name="${day}" value="2:30">
+                                        <label for="${day} 2:30">2:30 PM</label>
+                                        <input type="checkbox" id="${day} 3:00" name="${day}" value="3:00">
+                                        <label for="${day} 3:00">3:00 PM</label>
+                                        <input type="checkbox" id="${day} 3:30" name="${day}" value="3:30">
+                                        <label for="${day} 3:30">3:30 PM</label>
+                                        <input type="checkbox" id="${day} 4:00" name="${day}" value="4:00">
+                                        <label for="${day} 4:00">4:00 PM</label>
+                                        <input type="checkbox" id="${day} 4:30" name="${day}" value="4:30">
+                                        <label for="${day} 4:30">4:30 PM</label>
+                                    </div>
+                                </c:if>
+                                <c:if test="${day.getDayOfWeek().getValue() >= 6}">
+                                <div style="display: none;"></div>
+                                </c:if>
+                            </c:forEach>
                             <button style="margin: 50px; width: 40%" type="submit" id="button_apply">Submit</button>
                         </div>
                     </form:form>
@@ -227,11 +235,23 @@
     <script>
         <c:forEach var="day" items="${daysAfter}">
             $("#${day.getDayOfMonth()}").on('click', function(){
-                    this.classList.toggle('active');
                     var content = document.getElementById("${day}");
+                    var otherOnElements = document.getElementsByClassName("time-on");
+                    var otherDays = document.getElementsByClassName("active");
                     if (content.style.maxHeight){
+                        this.classList.remove('active');
                         content.style.maxHeight = null;
+                        content.classList.remove("time-on")
                     } else {
+                        Array.from(otherDays).forEach(function (element) {
+                            element.classList.remove('active');
+                        });
+                        Array.from(otherOnElements).forEach(function (element) {
+                            element.classList.remove('time-on');
+                            element.style.maxHeight = null;
+                        });
+                        this.classList.toggle('active');
+                        content.classList.add("time-on")
                         content.style.maxHeight = 330 + "px";
                     }
             });

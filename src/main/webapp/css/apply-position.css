@@ -230,8 +230,7 @@ p.bubble{
 }
 
 .currentDay{
-    background: var(--geek-purple);
-    border: 2px solid grey;
+    color: lightgrey;
 }
 
 .days li.non-select{
@@ -248,7 +247,19 @@ p.bubble{
 }
 
 .timeCollapse{
-    width: 200px;
+    width: 600px;
     overflow: auto;
     max-height: 0px;
+    display: grid;
+    grid-template-columns: auto auto auto auto auto auto;
+    margin-left: 50px;
+}
+
+.active:after {
+    content: "";
+
+}
+
+input[type="checkbox"]{
+
 }

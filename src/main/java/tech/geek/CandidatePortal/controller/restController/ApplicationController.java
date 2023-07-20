@@ -1,5 +1,6 @@
 package tech.geek.CandidatePortal.controller.restController;
 
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,9 +13,9 @@ import tech.geek.CandidatePortal.entity.Position;
 import tech.geek.CandidatePortal.entity.User;
 import tech.geek.CandidatePortal.services.*;
 
+import javax.servlet.ServletRequest;
 import java.time.LocalDate;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 @RestController
 public class ApplicationController {
@@ -38,20 +39,42 @@ public class ApplicationController {
                                                   @RequestParam("cover-letter") MultipartFile coverLetter,
                                                   @RequestParam("first-name") String firstName,
                                                   @RequestParam("last-name") String lastName,
-                                                  @RequestParam("notes") String notes) throws Exception {
+                                                  @RequestParam("notes") String notes,
+                                                  ServletRequest request) throws Exception {
 
         //Declaring Variables
         Application newApplication = new Application();
         User account = userService.currentUser();
         Map<String, String> resumePaths = fileService.pullUserResumes(account);
         Position position = positionService.getPositionById(positionId);
+        Map<String,Object> availability = new HashMap<>();
+        List<LocalDate> daysAfter = new ArrayList<>();
+        LocalDate currentDate = LocalDate.now();
+        LocalDate lastDate = currentDate.plusDays((7 + (6-currentDate.getDayOfWeek().getValue())));
+        while (!(currentDate.equals(lastDate))){
+            currentDate = currentDate.plusDays(1);
+            daysAfter.add(currentDate);
+        }
+        for (LocalDate date: daysAfter) {
+            availability.put(date.toString(),request.getParameterValues(date.toString()));
+        }
+        for (String date: availability.keySet()){
+            System.out.println(date);
+            String [] times = (String[]) availability.get(date);
+            System.out.println("---------------------------");
+            for (String time: times) {
+                System.out.println(time);
+            }
+            System.out.println("---------------------------\n");
+        }
+        //Putting in availability
         newApplication.setFirst_name(firstName);
         newApplication.setLast_name(lastName);
-
         //Checks For Valid Fields
         newApplication.setUser(account);
         newApplication.setPosition(position);
         newApplication.setInitial_contact_date(LocalDate.now());
+        newApplication.setAvailability(availability);
 
         //If the user is using a previously uploaded resume
         if (resume.isPresent()){
@@ -61,7 +84,7 @@ public class ApplicationController {
         //If the user is uploading a resume for the first time.
         else if (resumeFile.isPresent()){
             //Saves the file to the Resume folder, and returns the file path
-            newApplication.setResume_path(fileService.saveResume(resumeFile.get(), userService.currentUser()));
+            //newApplication.setResume_path(fileService.saveResume(resumeFile.get(), userService.currentUser()));
         }
         if (coverLetter != null){
             //Set the cover letter path to the cover letter (NOT IMPLEMENTED YET)
@@ -72,7 +95,7 @@ public class ApplicationController {
         position.setTotal_candidates(position.getTotal_candidates() + 1);
         position = positionService.savePosition(position);
         //Sends an Email Confirmation
-        System.out.println(mailService.sendConfirmation(account,position.getName(),position.getUserGroup().getName()));
+        //System.out.println(mailService.sendConfirmation(account,position.getName(),position.getUserGroup().getName()));
         return new ResponseEntity<>("created", HttpStatus.CREATED);
     }
 
