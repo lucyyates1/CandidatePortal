@@ -1,6 +1,11 @@
 package tech.geek.CandidatePortal.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.commons.lang3.StringUtils;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -11,11 +16,14 @@ import tech.geek.CandidatePortal.services.*;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
+import java.io.Console;
 import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 public class CandidatePositionController {
@@ -90,6 +98,25 @@ public class CandidatePositionController {
         */
 
         return "candidateposition";
+    }
+
+    @GetMapping("/availability")
+    public String getAvailability(@RequestParam("id") Long applicationID, Model model){
+        ObjectMapper mapper = new ObjectMapper();
+
+        System.out.println(applicationID);
+        Application currentApp = applicationService.getApplicationById(applicationID);
+        try{
+            Map<String, String []> availability = mapper.readValue(currentApp.getAvailability(),Map.class);
+            System.out.println(availability);
+            model.addAttribute("available", availability);
+        } catch (JsonMappingException e) {
+            throw new RuntimeException(e);
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
+        }
+
+        return "test-availability";
     }
 
     //Candidate Side

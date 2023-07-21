@@ -117,6 +117,7 @@
                 <button id="button_add_candidate" style="margin-right:20px">Add Candidate</button>
                 <button id="button_update_candidate" style="margin-right:20px">Update Candidate Info</button>
                 <button id="button_score_candidate" style="margin-right:20px">Score Candidate</button>
+                <button id="button_view_availability" style="margin-right:20px">View Availability</button>
           	</c:if>
           	<c:if test="${listCandidates.size() < 1}">
           	    <h3>There are currently no candidates for ${position.name}</h3>
@@ -285,6 +286,25 @@
                             selectedID = null
                             $("tbody tr").removeClass("tr-sel")
                             console.log("Candidate was scored!")
+                        },
+
+                        failure: function (errMsg) {
+                            console.log(errMsg.toString())
+                        }
+                    });
+                }
+            })
+            $('#button_view_availability').on('click', function(){
+                if (selectedID != null) {
+                    candidateID = selectedID
+                    positionID = urlParams.get('id')
+                    $.ajax({
+                        type: "GET",
+                        url: '/availability?id=' + candidateID,
+                        success: function (response) {
+                            selectedID = null
+                            $("tbody tr").removeClass("tr-sel")
+                            window.location = '/availability?id=' + candidateID;
                         },
 
                         failure: function (errMsg) {

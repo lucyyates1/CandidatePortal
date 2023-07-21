@@ -47,7 +47,7 @@ public class ApplicationController {
         User account = userService.currentUser();
         Map<String, String> resumePaths = fileService.pullUserResumes(account);
         Position position = positionService.getPositionById(positionId);
-        Map<String,Object> availability = new HashMap<>();
+        JSONObject availability = new JSONObject();
         List<LocalDate> daysAfter = new ArrayList<>();
         LocalDate currentDate = LocalDate.now();
         LocalDate lastDate = currentDate.plusDays((7 + (6-currentDate.getDayOfWeek().getValue())));
@@ -56,25 +56,18 @@ public class ApplicationController {
             daysAfter.add(currentDate);
         }
         for (LocalDate date: daysAfter) {
-            availability.put(date.toString(),request.getParameterValues(date.toString()));
-        }
-        for (String date: availability.keySet()){
-            System.out.println(date);
-            String [] times = (String[]) availability.get(date);
-            System.out.println("---------------------------");
-            for (String time: times) {
-                System.out.println(time);
+            if (request.getParameterValues(date.toString()) != null) {
+                availability.put(date.toString(), request.getParameterValues(date.toString()));
             }
-            System.out.println("---------------------------\n");
         }
-        //Putting in availability
+        System.out.println(availability);
         newApplication.setFirst_name(firstName);
         newApplication.setLast_name(lastName);
         //Checks For Valid Fields
         newApplication.setUser(account);
         newApplication.setPosition(position);
         newApplication.setInitial_contact_date(LocalDate.now());
-        newApplication.setAvailability(availability);
+        newApplication.setAvailability(availability.toString());
 
         //If the user is using a previously uploaded resume
         if (resume.isPresent()){
@@ -84,7 +77,7 @@ public class ApplicationController {
         //If the user is uploading a resume for the first time.
         else if (resumeFile.isPresent()){
             //Saves the file to the Resume folder, and returns the file path
-            //newApplication.setResume_path(fileService.saveResume(resumeFile.get(), userService.currentUser()));
+            newApplication.setResume_path(fileService.saveResume(resumeFile.get(), userService.currentUser()));
         }
         if (coverLetter != null){
             //Set the cover letter path to the cover letter (NOT IMPLEMENTED YET)

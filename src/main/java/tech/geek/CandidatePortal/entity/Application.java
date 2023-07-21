@@ -1,12 +1,8 @@
 package tech.geek.CandidatePortal.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonTypeId;
-import org.hibernate.annotations.Type;
-import org.hibernate.annotations.TypeDef;
-import org.json.JSONObject;
+import com.fasterxml.jackson.annotation.JsonRawValue;
 import org.springframework.format.annotation.DateTimeFormat;
-import tech.geek.CandidatePortal.entity.entityHelper.JsonToMapConverter;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -54,8 +50,8 @@ public class Application {
     private LocalDate initial_contact_date;
 
     @Column(name = "availability", columnDefinition = "json")
-    @Convert(attributeName = "data", converter = JsonToMapConverter.class)
-    private Map<String,Object> availability = new HashMap<>();
+    @JsonRawValue
+    private String availability;
 
     @Column(columnDefinition = "TINYINT")
     private int current_interview;
@@ -83,7 +79,7 @@ public class Application {
     public Application() {
     }
 
-    public Application(long application_id, User user, Position position, Set<ApplicationCertification> application_certifications, String first_name, String last_name, String education, int experience, String resume_path, String notes, LocalDate initial_contact_date, Map<String, Object> availability, int current_interview, LocalDate meet_and_greet_date, LocalDate technical_interview_date, LocalDate offer_date, LocalDate filled_date, boolean archived, int score, LocalDate score_run_date) {
+    public Application(long application_id, User user, Position position, Set<ApplicationCertification> application_certifications, String first_name, String last_name, String education, int experience, String resume_path, String notes, LocalDate initial_contact_date, String availability, int current_interview, LocalDate meet_and_greet_date, LocalDate technical_interview_date, LocalDate offer_date, LocalDate filled_date, boolean archived, int score, LocalDate score_run_date) {
         this.application_id = application_id;
         this.user = user;
         this.position = position;
@@ -194,11 +190,11 @@ public class Application {
         this.initial_contact_date = initial_contact_date;
     }
 
-    public Map<String, Object> getAvailability() {
+    public String getAvailability() {
         return availability;
     }
 
-    public void setAvailability(Map<String, Object> availability) {
+    public void setAvailability(String availability) {
         this.availability = availability;
     }
 
@@ -280,7 +276,7 @@ public class Application {
                 ", resume_path='" + resume_path + '\'' +
                 ", notes='" + notes + '\'' +
                 ", initial_contact_date=" + initial_contact_date +
-                ", availability=" + availability +
+                ", availability='" + availability + '\'' +
                 ", current_interview=" + current_interview +
                 ", meet_and_greet_date=" + meet_and_greet_date +
                 ", technical_interview_date=" + technical_interview_date +
