@@ -31,6 +31,7 @@ public class ApplyController {
 
     //@Autowired
     //PositionCandidateService positionCandidateService;
+
     @Autowired
     UserService userService;
     @Autowired
@@ -51,6 +52,7 @@ public class ApplyController {
         LocalDate lastDate = currentDate.plusDays((7 + (6-currentDate.getDayOfWeek().getValue())));
         List<LocalDate> daysBefore = new ArrayList<>();
         List<LocalDate> daysAfter = new ArrayList<>();
+        Boolean isDaylightSavings = TimeZone.getDefault().inDaylightTime(new Date());
         while (!(firstDate.equals(currentDate))){
             daysBefore.add(firstDate);
             firstDate = firstDate.plusDays(1);
@@ -62,7 +64,7 @@ public class ApplyController {
         for (Application application : user.getApplications()
              ) {
             if (application.getPosition().getPosition_id() == id){
-                m.addAttribute("applyText", "Application Aleady Recieved!");
+                m.addAttribute("applyText", "Application Already Received!");
                 return "apply-success";
             }
         }
@@ -107,7 +109,8 @@ public class ApplyController {
         m.addAttribute("daysBefore", daysBefore);
         m.addAttribute("currentDay",currentDate);
         m.addAttribute("daysAfter",daysAfter);
-        System.out.println(currentDate);
+        m.addAttribute("isDaylightSavings", isDaylightSavings);
+        System.out.println(isDaylightSavings);
         return "apply-position";
     }
 

@@ -15,6 +15,7 @@ import tech.geek.CandidatePortal.services.*;
 
 import javax.servlet.ServletRequest;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.*;
 
 @RestController
@@ -40,6 +41,7 @@ public class ApplicationController {
                                                   @RequestParam("first-name") String firstName,
                                                   @RequestParam("last-name") String lastName,
                                                   @RequestParam("notes") String notes,
+                                                  @RequestParam("timeZone") Integer timeZone,
                                                   ServletRequest request) throws Exception {
 
         //Declaring Variables
@@ -48,19 +50,38 @@ public class ApplicationController {
         Map<String, String> resumePaths = fileService.pullUserResumes(account);
         Position position = positionService.getPositionById(positionId);
         JSONObject availability = new JSONObject();
-        List<LocalDate> daysAfter = new ArrayList<>();
         LocalDate currentDate = LocalDate.now();
         LocalDate lastDate = currentDate.plusDays((7 + (6-currentDate.getDayOfWeek().getValue())));
+        List<String> nextTimes = new ArrayList<>();
+        List<String> times = new ArrayList<>();
         while (!(currentDate.equals(lastDate))){
             currentDate = currentDate.plusDays(1);
-            daysAfter.add(currentDate);
-        }
-        for (LocalDate date: daysAfter) {
-            if (request.getParameterValues(date.toString()) != null) {
-                availability.put(date.toString(), request.getParameterValues(date.toString()));
+            if (request.getParameterValues(currentDate.toString()) != null) {
+                for (String time : nextTimes){
+                    times.add(time);
+                }
+                nextTimes.clear();
+                for (String time: request.getParameterValues(currentDate.toString())) {
+                    String [] hourMin = time.split(":");
+                    Integer hour = Integer.parseInt(hourMin[0]);
+                    hour = hour + timeZone;
+                    if (hour >= 24){
+                        hour = hour%24;
+                        nextTimes.add(hour + ":" + hourMin[1]);
+                    }
+                    else{
+                        times.add(hour + ":" + hourMin[1]);
+                    }
+                }
+                if (times.size() > 0)
+                    availability.put(currentDate.toString(), times);
+                times.clear();
+            }
+            else if (nextTimes.size() > 0){
+                availability.put(currentDate.toString(), nextTimes);
+                nextTimes.clear();
             }
         }
-        System.out.println(availability);
         newApplication.setFirst_name(firstName);
         newApplication.setLast_name(lastName);
         //Checks For Valid Fields
@@ -89,6 +110,7 @@ public class ApplicationController {
         position = positionService.savePosition(position);
         //Sends an Email Confirmation
         //System.out.println(mailService.sendConfirmation(account,position.getName(),position.getUserGroup().getName()));
+        System.out.println(availability);
         return new ResponseEntity<>("created", HttpStatus.CREATED);
     }
 

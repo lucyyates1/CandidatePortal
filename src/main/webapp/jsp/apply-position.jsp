@@ -159,6 +159,21 @@
                             <textarea name="notes" type="text" id="candidate-notes" style="height: 200px; width: 70%;"></textarea>
                             <label for="calender" class="input_label">Availability For Interview:</label>
                             <div id="calender">
+                                <label for="timeZone" class="input_label">Time Zone:</label>
+                                <select name="timeZone" id="timeZone">
+                                    <c:if test="${isDaylightSavings}">
+                                        <option value="5" selected="true">Eastern Daylight Time(EDT)</option>
+                                        <option value="8">Pacific Daylight Time (PDT)</option>
+                                        <option value="7">Mountain Daylight Time (MDT)</option>
+                                        <option value="6">Central Daylight Time (CDT)</option>
+                                    </c:if>
+                                    <c:if test="${!(isDaylightSavings)}">
+                                        <option value="4" selected="true">Eastern Standard Time(EST)</option>
+                                        <option value="7">Pacific Standard Time (PST)</option>
+                                        <option value="6">Mountain Standard Time (MST)</option>
+                                        <option value="5">Central Standard Time (CST)</option>
+                                    </c:if>
+                                </select>
                                 <ul class="weekdays">
                                     <li>Su</li>
                                     <li>Mo</li>
@@ -167,7 +182,6 @@
                                     <li>Th</li>
                                     <li>Fr</li>
                                     <li>Sa</li>
-
                                 </ul>
                                 <ul class="days">
                                 <c:forEach var="day" items="${daysBefore}">
@@ -200,22 +214,22 @@
                                         <label for="${day} 12:00">12:00 PM</label>
                                         <input type="checkbox" id="${day} 12:30" name="${day}" value="12:30">
                                         <label for="${day} 12:30">12:30 PM</label>
-                                        <input type="checkbox" id="${day} 1:00" name="${day}" value="1:00">
-                                        <label for="${day} 1:00">1:00 PM</label>
-                                        <input type="checkbox" id="${day} 1:30" name="${day}" value="1:30">
-                                        <label for="${day} 1:30">1:30 PM</label>
-                                        <input type="checkbox" id="${day} 2:00" name="${day}" value="2:00">
-                                        <label for="${day} 2:00">2:00 PM</label>
-                                        <input type="checkbox" id="${day} 2:30" name="${day}" value="2:30">
-                                        <label for="${day} 2:30">2:30 PM</label>
-                                        <input type="checkbox" id="${day} 3:00" name="${day}" value="3:00">
-                                        <label for="${day} 3:00">3:00 PM</label>
-                                        <input type="checkbox" id="${day} 3:30" name="${day}" value="3:30">
-                                        <label for="${day} 3:30">3:30 PM</label>
-                                        <input type="checkbox" id="${day} 4:00" name="${day}" value="4:00">
-                                        <label for="${day} 4:00">4:00 PM</label>
-                                        <input type="checkbox" id="${day} 4:30" name="${day}" value="4:30">
-                                        <label for="${day} 4:30">4:30 PM</label>
+                                        <input type="checkbox" id="${day} 13:00" name="${day}" value="13:00">
+                                        <label for="${day} 13:00">1:00 PM</label>
+                                        <input type="checkbox" id="${day} 13:30" name="${day}" value="13:30">
+                                        <label for="${day} 13:30">1:30 PM</label>
+                                        <input type="checkbox" id="${day} 14:00" name="${day}" value="14:00">
+                                        <label for="${day} 14:00">2:00 PM</label>
+                                        <input type="checkbox" id="${day} 14:30" name="${day}" value="14:30">
+                                        <label for="${day} 14:30">2:30 PM</label>
+                                        <input type="checkbox" id="${day} 15:00" name="${day}" value="15:00">
+                                        <label for="${day} 15:00">3:00 PM</label>
+                                        <input type="checkbox" id="${day} 15:30" name="${day}" value="15:30">
+                                        <label for="${day} 15:30">3:30 PM</label>
+                                        <input type="checkbox" id="${day} 16:00" name="${day}" value="16:00">
+                                        <label for="${day} 16:00">4:00 PM</label>
+                                        <input type="checkbox" id="${day} 16:30" name="${day}" value="16:30">
+                                        <label for="${day} 16:30">4:30 PM</label>
                                     </div>
                                 </c:if>
                                 <c:if test="${day.getDayOfWeek().getValue() >= 6}">
