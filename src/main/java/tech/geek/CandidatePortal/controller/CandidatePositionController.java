@@ -20,10 +20,7 @@ import java.io.Console;
 import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Controller
 public class CandidatePositionController {
@@ -103,19 +100,61 @@ public class CandidatePositionController {
     @GetMapping("/availability")
     public String getAvailability(@RequestParam("id") Long applicationID, Model model){
         ObjectMapper mapper = new ObjectMapper();
-
         System.out.println(applicationID);
         Application currentApp = applicationService.getApplicationById(applicationID);
+        List<String> possibleTimes = new ArrayList<>(List.of("10:00 AM", "10:30 AM", "11:00 AM", "11:30 AM", "12:00 PM", "12:30 PM", "1:00 PM", "1:30 PM", "2:00 PM", "2:30 PM", "3:00 PM", "3:30 PM", "4:00 PM", "4:30 PM"));
         try{
-            Map<String, String []> availability = mapper.readValue(currentApp.getAvailability(),Map.class);
-            System.out.println(availability);
-            model.addAttribute("available", availability);
+            Map<String, List<String>> availability = mapper.readValue(currentApp.getAvailability(),Map.class);
+            Map<String, List<String>> newavailability = new HashMap<>();
+            Integer easternTime;
+            List<String> dates = new ArrayList<>(availability.keySet().stream().toList());
+            Collections.sort(dates);
+            if (TimeZone.getDefault().inDaylightTime(new Date())){
+                easternTime = 5;
+            }
+            else{
+                easternTime = 4;
+            }
+            for (String date : dates){
+                LocalDate currentDate = LocalDate.parse(date);
+                newavailability.put(date,new ArrayList<>());
+                for (String time: availability.get(date)){
+                    String [] hourMin = time.split(":");
+                    Integer hour = Integer.parseInt(hourMin[0]);
+                    if (hour < easternTime){
+                        hour = 24 - (easternTime - hour);
+                        if (!(newavailability.containsKey(currentDate.minusDays(1).toString())))
+                            newavailability.put(currentDate.minusDays(1).toString(), new ArrayList<>());
+                        if (hour == 0)
+                            newavailability.get(currentDate.minusDays(1).toString()).add(12 + ":" + hourMin[1] + " AM");
+                        else if (hour < 12)
+                            newavailability.get(currentDate.minusDays(1).toString()).add(hour + ":" + hourMin[1] + " AM");
+                        else
+                            newavailability.get(currentDate.minusDays(1).toString()).add((hour%12) + ":" + hourMin[1] + " PM");
+                    }
+                    else{
+                        hour = hour - easternTime;
+                        if (hour == 0)
+                            newavailability.get(date).add(12 + ":" + hourMin[1] + " AM");
+                        else if (hour < 12)
+                            newavailability.get(date).add(hour + ":" + hourMin[1] + " AM");
+                        else
+                            newavailability.get(date).add((hour%12) + ":" + hourMin[1] + " PM");
+                    }
+                }
+            }
+            dates = newavailability.keySet().stream().toList();
+            Collections.sort(dates);
+            System.out.println(dates);
+            System.out.println(newavailability);
+            model.addAttribute("available", newavailability);
+            model.addAttribute("dates",dates);
+            model.addAttribute("times", possibleTimes);
         } catch (JsonMappingException e) {
             throw new RuntimeException(e);
         } catch (JsonProcessingException e) {
             throw new RuntimeException(e);
         }
-
         return "test-availability";
     }
 
